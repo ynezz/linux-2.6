@@ -87,6 +87,9 @@ ENTRY(stext)
 	movs	r10, r5				@ invalid processor (r5=0)?
  THUMB( it	eq )		@ force fixup-able long branch encoding
 	beq	__error_p			@ yes, error 'p'
+#ifdef CONFIG_MACH_TS72XX_FORCE_MACHINEID
+	ldr	r1, =0x2a1
+#endif
 	bl	__lookup_machine_type		@ r5=machinfo
 	movs	r8, r5				@ invalid machine (r5=0)?
  THUMB( it	eq )		@ force fixup-able long branch encoding
