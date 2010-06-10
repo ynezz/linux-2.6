@@ -296,6 +296,14 @@ config SERIAL_AMBA_PL010_CONSOLE
 	  your boot loader (lilo or loadlin) about how to pass options to the
 	  kernel at boot time.)
 
+config SERIAL_AMBA_PL010_TS72XX
+	bool "Support for RS-485 on AMBA serial port (for TS-72XX SBC)"
+	depends on SERIAL_AMBA_PL010 != n && MACH_TS72XX
+	help
+	  This add support for RS-485 on some Technologic System SBC.
+
+	  If unsure, say N.
+
 config SERIAL_AMBA_PL011
 	tristate "ARM AMBA PL011 serial port support"
 	depends on ARM_AMBA

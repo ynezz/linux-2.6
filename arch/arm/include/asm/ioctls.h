@@ -74,6 +74,9 @@
 #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
 #define FIOQSIZE	0x545E
 
+#define TIOC_SBCC485	0x545F /* TS72xx RTS/485 mode clear */
+#define TIOC_SBCS485	0x5460 /* TS72xx RTS/485 mode set */
+
 /* Used for packet mode */
 #define TIOCPKT_DATA		 0
 #define TIOCPKT_FLUSHREAD	 1
