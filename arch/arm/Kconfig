@@ -321,6 +321,7 @@ config ARCH_EP93XX
 	select CPU_ARM920T
 	select ARM_AMBA
 	select ARM_VIC
+	select ARCH_SPARSEMEM_ENABLE
 	select GENERIC_GPIO
 	select HAVE_CLK
 	select COMMON_CLKDEV
