@@ -267,6 +267,23 @@ config SERIAL_8250_RM9K
 	  port hardware found on MIPS RM9122 and similar processors.
 	  If unsure, say N.
 
+config SERIAL_8250_TS_SER1
+	tristate "Support TS-SER1 (for TS-72XX SBC)"
+	depends on SERIAL_8250 != n && MACH_TS72XX
+	help
+	  Say Y here if you have a TS-SER1 PC/104 peripheral.
+	  COM number will be configured automaticaly.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called 8250_ts_ser1.
+
+config SERIAL_8250_TS_SER1_IRQ
+	int "Selected IRQ (5, 6 or 7)"
+	depends on SERIAL_8250_TS_SER1
+	default "5"
+	help
+	  Enter jumper IRQ configuration
+
 comment "Non-8250 serial port support"
 
 config SERIAL_AMBA_PL010
