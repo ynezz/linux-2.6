@@ -251,6 +251,16 @@ config AX88796_93CX6
 	help
 	  Select this if your platform comes with an external 93CX6 eeprom.
 
+config AX88796_TS_ETH100
+	tristate "Support for TS-ETH100 (TS-72XX SBC)"
+	depends on AX88796 && MACH_TS72XX
+	help
+	  Say Y here if you have a TS-ETH100 PC/104 peripheral.
+	  IRQ numbers and I/O address will be configurated automatically.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called ax88796_ts_eth100.
+
 config MACE
 	tristate "MACE (Power Mac ethernet) support"
 	depends on PPC_PMAC && PPC32
