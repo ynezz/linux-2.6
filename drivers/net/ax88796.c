@@ -810,7 +810,9 @@ static int ax_remove(struct platform_device *_dev)
 	ax = to_ax_dev(dev);
 
 	unregister_netdev(dev);
-	free_irq(dev->irq, dev);
+	if (ax->running) { // already freed in ax_close?
+		free_irq(dev->irq, dev);
+	}
 
 	iounmap(ei_status.mem);
 	release_resource(ax->mem);
@@ -936,7 +938,11 @@ static int ax_probe(struct platform_device *pdev)
 			goto exit_mem2;
 		}
 
+		#if defined(CONFIG_AX88796_TS_ETH100) || defined(CONFIG_AX88796_TS_ETH100_MODULE)
+		ei_status.reg_offset[0x10] = ax->map2 - ei_status.mem + 0x10; /* don't know why, but +0x20 works too */
+		#else
 		ei_status.reg_offset[0x1f] = ax->map2 - ei_status.mem;
+		#endif
 	}
 
 	/* got resources, now initialise and register device */
