@@ -40,6 +40,11 @@
 #define TS72XX_OPTIONS2_TS9420		0x04
 #define TS72XX_OPTIONS2_TS9420_BOOT	0x02
 
+#define TS72XX_PLD_VERSION_VIRT_BASE	0xfebf7000
+#define TS72XX_PLD_VERSION_PHYS_BASE	0x23400000
+#define TS72XX_PLD_VERSION_SIZE		0x00001000
+
+#define TS72XX_JUMPERS_MAX197_PHYS_BASE	0x10800000
 
 #define TS72XX_RTC_INDEX_VIRT_BASE	0xfebf9000
 #define TS72XX_RTC_INDEX_PHYS_BASE	0x10800000
@@ -51,6 +56,23 @@
 
 #define TS72XX_WDT_CONTROL_PHYS_BASE	0x23800000
 #define TS72XX_WDT_FEED_PHYS_BASE	0x23c00000
+
+/*
+ * TS7260 specific : SD card & Power Management
+ *
+ * phys		size	description
+ * 12000000	4K	Power management register (8-bit)
+ * 13000000	4K	SD card registers (4 x 8-bit)
+ */
+#define TS7260_POWER_MANAGEMENT_PHYS_BASE	0x12000000
+#define TS7260_PM_RS232_LEVEL_CONVERTER	0x01
+#define TS7260_PM_USB			0x02
+#define TS7260_PM_LCD			0x04
+#define TS7260_PM_5V_SWITCHER		0x08
+#define TS7260_PM_PC104_CLOCK		0x10
+#define TS7260_PM_PC104_FAST_STROBES	0x20
+#define TS7260_PM_TTL_UART_ENABLE	0x40
+#define TS7260_PM_SCRATCH_BIT		0x80
 
 #ifndef __ASSEMBLY__
 
@@ -95,4 +117,21 @@ static inline int is_ts9420_installed(void)
 	return !!(__raw_readb(TS72XX_OPTIONS2_VIRT_BASE) &
 					TS72XX_OPTIONS2_TS9420);
 }
+
+static inline int is_rs485_installed(void)
+{
+	return !!(__raw_readb(TS72XX_OPTIONS_VIRT_BASE) &
+					TS72XX_OPTIONS_COM2_RS485);
+}
+static inline int get_ts72xx_pld_version(void)
+{
+	return (__raw_readb(TS72XX_PLD_VERSION_VIRT_BASE) & 0x7);
+}
+
+/* User jumper */
+static inline int is_jp6_set(void)
+{
+	return (__raw_readb(TS72XX_OPTIONS2_VIRT_BASE) & 0x1);
+}
+
 #endif

@@ -196,6 +196,7 @@
 #define EP93XX_SYSCON_SYSCFG_LCSN2	(1<<1)
 #define EP93XX_SYSCON_SYSCFG_LCSN1	(1<<0)
 #define EP93XX_SYSCON_SWLOCK		EP93XX_SYSCON_REG(0xc0)
+#define EP93XX_SYSCON_CHIPID		EP93XX_SYSCON_REG(0x94)
 
 /* EP93xx System Controller software locked register write */
 void ep93xx_syscon_swlocked_write(unsigned int val, void __iomem *reg);
