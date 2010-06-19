@@ -458,4 +458,25 @@ source "drivers/misc/cb710/Kconfig"
 source "drivers/misc/iwmc3200top/Kconfig"
 source "drivers/misc/ti-st/Kconfig"
 
+config TS72XX_MAX197
+	tristate "TS-72xx MAX197 support"
+	depends on ARCH_EP93XX && MACH_TS72XX && SYSFS
+	help
+	  Say Y here if to include support for the MAX197 A/D converter
+	  optionally included on Technologic Systems SBCs.
+	  Default acquisition range is [0..5V].
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called ts72xx_max197.
+
+if TS72XX_MAX197
+
+config TS72XX_MAX197_AVERAGE
+	bool "Average measurement"
+	help
+	  Say Y here to enable making average measurement. Default is 1.
+	  See /sys/module/ts72xx_max197/parameters/average file.
+
+endif # TS72XX_MAX197
+
 endif # MISC_DEVICES
