@@ -36,6 +36,11 @@ static struct map_desc ts72xx_io_desc[] __initdata = {
 		.length		= TS72XX_MODEL_SIZE,
 		.type		= MT_DEVICE,
 	}, {
+		.virtual	= TS72XX_PLD_VERSION_VIRT_BASE,
+		.pfn		= __phys_to_pfn(TS72XX_PLD_VERSION_PHYS_BASE),
+		.length		= TS72XX_PLD_VERSION_SIZE,
+		.type		= MT_DEVICE,
+	}, {
 		.virtual	= TS72XX_OPTIONS_VIRT_BASE,
 		.pfn		= __phys_to_pfn(TS72XX_OPTIONS_PHYS_BASE),
 		.length		= TS72XX_OPTIONS_SIZE,
