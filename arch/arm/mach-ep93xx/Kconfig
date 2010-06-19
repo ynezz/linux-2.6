@@ -212,6 +212,13 @@ config MACH_TS72XX_FORCE_MACHINEID
 	  Say 'Y' here to force Machine ID to 0x2A1 (MACH_TYPE_TS72XX legacy value)
 	  In early days Technologic Systems fixed the 0x163 value in redboot.
 
+config MACH_TS72XX_SBCINFO
+	tristate "Add procfs /proc/driver/sbcinfo"
+	depends on MACH_TS72XX
+	help
+	  Say 'Y' to add a procfs entry containing some information
+	  related to Technologic Systems TS-72xx SBC.
+
 endmenu
 
 endif
