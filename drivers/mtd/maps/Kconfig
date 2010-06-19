@@ -414,6 +414,21 @@ config MTD_H720X
 	  This enables access to the flash chips on the Hynix evaluation boards.
 	  If you have such a board, say 'Y'.
 
+config MTD_TS7200_NOR
+	tristate "CFI Flash device mapped on TS-7200"
+	depends on MTD_CFI && MACH_TS72XX
+	help
+	  This provides a map driver for the on-board flash of the Technologic
+	  System's TS-7200 board. The 8MB (or 16MB) flash is splitted into 3 partitions
+	  which are accessed as separate MTD devices.
+
+config MTD_TS7200_NOR_SIZE
+	int "Flash size (8 or 16mb)"
+	depends on MTD_TS7200_NOR
+	default "8"
+	help
+	  Enter the NOR Flash size of your TS-7200 board. Can be 8 or 16.
+
 # This needs CFI or JEDEC, depending on the cards found.
 config MTD_PCI
 	tristate "PCI MTD driver"
