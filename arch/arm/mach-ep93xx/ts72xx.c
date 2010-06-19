@@ -281,10 +281,36 @@ static struct platform_device ts72xx_wdt_device = {
 	.resource	= ts72xx_wdt_resources,
 };
 
-static struct ep93xx_eth_data __initdata ts72xx_eth_data = {
+/*************************************************************************
+ * MAX197 (8 * 12-bit A/D converter) option
+ *************************************************************************/
+static struct resource ts72xx_max197_resources[] = {
+	[0] = { /* sample/control register */
+		.start	= TS72XX_MAX197_SAMPLE_PHYS_BASE,
+		.end	= TS72XX_MAX197_SAMPLE_PHYS_BASE + SZ_4K - 1,
+		.flags	= IORESOURCE_MEM,
+	},
+	[1] = { /* busy bit */
+		.start	= TS72XX_JUMPERS_MAX197_PHYS_BASE,
+		.end	= TS72XX_JUMPERS_MAX197_PHYS_BASE + SZ_4K - 1,
+		.flags	= IORESOURCE_MEM,
+	}
+};
+
+static struct platform_device ts72xx_max197_device = {
+	.name		= "ts72xx-max197",
+	.id		= -1,
+	.dev		= {
+		.platform_data	= NULL,
+	},
+	.num_resources	= ARRAY_SIZE(ts72xx_max197_resources),
+	.resource	= ts72xx_max197_resources,
+};
+
 /*************************************************************************
  * Ethernet
  *************************************************************************/
+static struct ep93xx_eth_data __initdata ts72xx_eth_data = {
 	.phy_id		= 1,
 };
 
@@ -314,6 +340,10 @@ static void __init ts72xx_init_machine(void)
 	ep93xx_register_i2c(&ts72xx_i2c_gpio_data,
 			ts72xx_i2c_board_info,
 			ARRAY_SIZE(ts72xx_i2c_board_info));
+
+	if (is_max197_installed()) {
+		platform_device_register(&ts72xx_max197_device);
+	}
 
 	/* PWM1 is DIO_6 on TS-72xx header */
 	ep93xx_register_pwm(0, 1);
