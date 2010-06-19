@@ -79,6 +79,9 @@ obj-$(CONFIG_PATA_PLATFORM)	+= pata_platform.o
 obj-$(CONFIG_PATA_AT91)	+= pata_at91.o
 obj-$(CONFIG_PATA_OF_PLATFORM)	+= pata_of_platform.o
 obj-$(CONFIG_PATA_ICSIDE)	+= pata_icside.o
+obj-$(CONFIG_PATA_TS72XX)	+= pata_ts72xx.o
+obj-$(CONFIG_PATA_TS7200_CF)	+= pata_ts7200_cf.o
+obj-$(CONFIG_PATA_TS9600)	+= pata_ts9600.o
 # Should be last but two libata driver
 obj-$(CONFIG_PATA_ACPI)		+= pata_acpi.o
 # Should be last but one libata driver
