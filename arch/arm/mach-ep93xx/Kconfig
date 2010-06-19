@@ -212,6 +212,27 @@ config MACH_TS72XX_FORCE_MACHINEID
 	  Say 'Y' here to force Machine ID to 0x2A1 (MACH_TYPE_TS72XX legacy value)
 	  In early days Technologic Systems fixed the 0x163 value in redboot.
 
+config MACH_TS72XX_SBCINFO
+	tristate "Add procfs /proc/driver/sbcinfo"
+	depends on MACH_TS72XX
+	help
+	  Say 'Y' to add a procfs entry containing some information
+	  related to Technologic Systems TS-72xx SBC.
+
+config MACH_TS72XX_GPIO_KEYS
+	bool "Enable GPIO keys"
+	depends on MACH_TS72XX
+	help
+	  Say 'Y' here to enable GPIO keys on DIO connector.
+	  Current config is KEY_UP for DIO_1 and KEY_DOWN for DIO_2.
+
+config MACH_TS72XX_GPIO_I2C
+	bool "Enable I2C over GPIO "
+	depends on MACH_TS72XX
+	help
+	  Say 'Y' here to enable I2C over GPIO on DIO connector.
+	  Default configuration is pin DIO_6=sda, DIO_7=scl, 100 kHz.
+
 endmenu
 
 endif

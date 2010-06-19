@@ -19,7 +19,17 @@
 #include <linux/m48t86.h>
 #include <linux/mtd/nand.h>
 #include <linux/mtd/partitions.h>
-
+#include <linux/mtd/physmap.h>
+#include <linux/gpio.h>
+#include <linux/gpio_keys.h>
+#if defined(CONFIG_MACH_TS72XX_GPIO_I2C)
+#include <linux/i2c.h>
+#include <linux/i2c-gpio.h>
+#endif
+#include <linux/mtd/nand.h>
+#include <linux/mtd/partitions.h>
+#include <linux/spi/spi.h>
+#include <linux/input.h>
 #include <mach/hardware.h>
 #include <mach/ts72xx.h>
 
@@ -279,6 +289,23 @@ static struct ep93xx_eth_data __initdata ts72xx_eth_data = {
 	.phy_id		= 1,
 };
 
+/*************************************************************************
+ * I2C (make access through TS-72XX "DIO" 2x8 header)
+ *************************************************************************/
+#if defined(CONFIG_MACH_TS72XX_GPIO_I2C)
+static struct i2c_gpio_platform_data ts72xx_i2c_gpio_data = {
+	.sda_pin		= EP93XX_GPIO_LINE_EGPIO14, // DIO_6
+	.sda_is_open_drain	= 0,
+	.scl_pin		= EP93XX_GPIO_LINE_EGPIO15, // DIO_7
+	.scl_is_open_drain	= 0,
+	.udelay			= 0,	/* default is 100 kHz */
+	.timeout		= 0,	/* default is 100 ms */
+};
+
+static struct i2c_board_info __initdata ts72xx_i2c_board_info[] = {
+};
+#endif
+
 static void __init ts72xx_init_machine(void)
 {
 	ep93xx_init_devices();
@@ -287,6 +314,12 @@ static void __init ts72xx_init_machine(void)
 	platform_device_register(&ts72xx_wdt_device);
 
 	ep93xx_register_eth(&ts72xx_eth_data, 1);
+
+#if defined(CONFIG_MACH_TS72XX_GPIO_I2C)
+	ep93xx_register_i2c(&ts72xx_i2c_gpio_data,
+			ts72xx_i2c_board_info,
+			ARRAY_SIZE(ts72xx_i2c_board_info));
+#endif
 
 	/* PWM1 is DIO_6 on TS-72xx header */
 	ep93xx_register_pwm(0, 1);
