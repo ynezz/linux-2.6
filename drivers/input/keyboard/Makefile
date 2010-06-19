@@ -45,3 +45,5 @@ obj-$(CONFIG_KEYBOARD_TNETV107X)	+= tnetv107x-keypad.o
 obj-$(CONFIG_KEYBOARD_TWL4030)		+= twl4030_keypad.o
 obj-$(CONFIG_KEYBOARD_XTKBD)		+= xtkbd.o
 obj-$(CONFIG_KEYBOARD_W90P910)		+= w90p910_keypad.o
+obj-$(CONFIG_TS72XX_DIO_3X4_KEYPAD)	+= ts72xx_dio_3x4.o
+obj-$(CONFIG_TS72XX_DIO_4X4_KEYPAD)	+= ts72xx_dio_4x4.o

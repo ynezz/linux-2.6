@@ -220,6 +220,36 @@ config KEYBOARD_MATRIX
 	  To compile this driver as a module, choose M here: the
 	  module will be called matrix_keypad.
 
+if KEYBOARD_MATRIX
+	
+choice
+	prompt "Keypad type"
+	default TS72XX_DIO_4X4_KEYPAD
+
+config TS72XX_DIO_3X4_KEYPAD
+	tristate "TS-72xx 3x4 matrix keypad"
+	depends on MACH_TS72XX
+	help
+	  This a 12 keys (4 rows, 3 cols using DIO_0-6) keypad with the following layout:
+	  1 2 3
+	  4 5 6
+	  7 8 9
+	  * 0 #
+
+config TS72XX_DIO_4X4_KEYPAD
+	tristate "TS-72xx 4x4 matrix keypad"
+	depends on MACH_TS72XX
+	help
+	  This a 16 keys (4 rows, 4 cols using DIO_0-7) keypad with the following layout:
+	  7 8 9 F
+	  4 5 6 E
+	  1 2 3 D
+	  A 0 B C
+
+endchoice
+
+endif # KEYBOARD_MATRIX
+
 config KEYBOARD_HIL_OLD
 	tristate "HP HIL keyboard support (simple driver)"
 	depends on GSC || HP300
