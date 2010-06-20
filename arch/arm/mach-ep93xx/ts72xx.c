@@ -233,6 +233,29 @@ static void __init ts72xx_register_flash(void)
 }
 
 /*************************************************************************
+ * SD Card (TS-7260 only)
+ *************************************************************************/
+
+static struct resource ts72xx_sdcard_resource = {
+	.start		= TS7260_SDCARD_PHYS_BASE,
+	.end		= TS7260_SDCARD_PHYS_BASE + 0x20,
+	.flags		= IORESOURCE_MEM,
+};
+
+static struct platform_device ts72xx_sdcard = {
+	.name		= "ts72xx-sdcard",
+	.id		= 0,
+	.num_resources	= 1,
+	.resource	= &ts72xx_sdcard_resource,
+};
+
+static void __init ts72xx_register_sdcard(void)
+{
+	if (board_is_ts7260() || board_is_ts7400() || board_is_ts7300())
+		platform_device_register(&ts72xx_sdcard);
+}
+
+/*************************************************************************
  * RTC
  *************************************************************************/
 static unsigned char ts72xx_rtc_readbyte(unsigned long addr)
@@ -333,6 +356,7 @@ static void __init ts72xx_init_machine(void)
 {
 	ep93xx_init_devices();
 	ts72xx_register_flash();
+	ts72xx_register_sdcard();
 	platform_device_register(&ts72xx_rtc_device);
 	platform_device_register(&ts72xx_wdt_device);
 
