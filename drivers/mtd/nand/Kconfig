@@ -96,7 +96,7 @@ config MTD_NAND_OMAP_PREFETCH_DMA
 	 Say y for DMA mode or MPU mode will be used
 
 config MTD_NAND_TS7250
-	tristate "NAND Flash device on TS-7250 board"
+	tristate "NAND Flash device on TS-7250 board (DEPRECATED)"
 	depends on MACH_TS72XX
 	help
 	  Support for NAND flash on Technologic Systems TS-7250 platform.
