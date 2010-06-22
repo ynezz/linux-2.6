@@ -424,6 +424,13 @@ config SPI_TLE62X0
 	  sysfs interface, with each line presented as a kind of GPIO
 	  exposing both switch control and diagnostic feedback.
 
+config SPI_TMP124
+	tristate "Texas Instruments TMP1224, TMP124"
+	depends on SPI_MASTER && SYSFS
+	help
+	  SPI driver for TMP12X temperature sensor chips.
+	  This provides a sysfs entry for temperature reading (2�C accurate).
+
 #
 # Add new SPI protocol masters in alphabetical order above this line
 #
