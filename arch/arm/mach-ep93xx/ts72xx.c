@@ -23,7 +23,11 @@
 #include <linux/gpio.h>
 #include <linux/i2c.h>
 #include <linux/i2c-gpio.h>
+#include <linux/mtd/nand.h>
+#include <linux/mtd/partitions.h>
+#include <linux/spi/spi.h>
 
+#include <mach/ep93xx_spi.h>
 #include <mach/hardware.h>
 #include <mach/ts72xx.h>
 
@@ -352,6 +356,60 @@ static struct i2c_gpio_platform_data ts72xx_i2c_gpio_data = {
 static struct i2c_board_info __initdata ts72xx_i2c_board_info[] = {
 };
 
+/*************************************************************************
+ * SPI
+ *************************************************************************/
+#if defined(CONFIG_SPI_TMP124) || defined(CONFIG_SPI_TMP124_MODULE)
+
+/* this is our GPIO line used for chip select */
+#define TMP124_CHIP_SELECT_GPIO EP93XX_GPIO_LINE_MCCD2
+
+static int ts72xx_tmp124_setup(struct spi_device *spi)
+{
+	int err;
+
+	err = gpio_request(TMP124_CHIP_SELECT_GPIO, spi->modalias);
+	if (err)
+		return err;
+
+	gpio_direction_output(TMP124_CHIP_SELECT_GPIO, 1);
+
+	return 0;
+}
+
+static void ts72xx_tmp124_cleanup(struct spi_device *spi)
+{
+	gpio_set_value(TMP124_CHIP_SELECT_GPIO, 1);
+	gpio_direction_input(TMP124_CHIP_SELECT_GPIO);
+	gpio_free(TMP124_CHIP_SELECT_GPIO);
+}
+
+static void ts72xx_tmp124_cs_control(struct spi_device *spi, int value)
+{
+	gpio_set_value(TMP124_CHIP_SELECT_GPIO, value);
+}
+
+static struct ep93xx_spi_chip_ops ts72xx_tmp124_ops = {
+	.setup		= ts72xx_tmp124_setup,
+	.cleanup	= ts72xx_tmp124_cleanup,
+	.cs_control	= ts72xx_tmp124_cs_control,
+};
+
+static struct spi_board_info ts72xx_spi_devices[] = {
+	{
+		.modalias		= "tmp124",
+		.max_speed_hz		= 2 * 1000 * 1000,
+		.bus_num		= 0,
+		.chip_select		= 0,
+		.controller_data	= &ts72xx_tmp124_ops,
+	},
+};
+
+static struct ep93xx_spi_info ts72xx_spi_info = {
+	.num_chipselect	= ARRAY_SIZE(ts72xx_spi_devices),
+};
+#endif
+
 static void __init ts72xx_init_machine(void)
 {
 	ep93xx_init_devices();
@@ -364,6 +422,11 @@ static void __init ts72xx_init_machine(void)
 	ep93xx_register_i2c(&ts72xx_i2c_gpio_data,
 			ts72xx_i2c_board_info,
 			ARRAY_SIZE(ts72xx_i2c_board_info));
+
+	#if defined(CONFIG_SPI_TMP124) || defined(CONFIG_SPI_TMP124_MODULE)
+	ep93xx_register_spi(&ts72xx_spi_info, ts72xx_spi_devices,
+			ARRAY_SIZE(ts72xx_spi_devices));
+	#endif
 
 	if (is_max197_installed()) {
 		platform_device_register(&ts72xx_max197_device);
