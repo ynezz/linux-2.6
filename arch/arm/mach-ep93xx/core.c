@@ -31,10 +31,12 @@
 #include <linux/amba/serial.h>
 #include <linux/i2c.h>
 #include <linux/i2c-gpio.h>
+#include <linux/spi/spi.h>
 
 #include <mach/hardware.h>
 #include <mach/fb.h>
 #include <mach/ep93xx_keypad.h>
+#include <mach/ep93xx_spi.h>
 
 #include <asm/mach/map.h>
 #include <asm/mach/time.h>
@@ -222,6 +224,20 @@ void ep93xx_devcfg_set_clear(unsigned int set_bits, unsigned int clear_bits)
 }
 EXPORT_SYMBOL(ep93xx_devcfg_set_clear);
 
+/**
+ * ep93xx_chip_revision() - returns the EP93xx chip revision
+ *
+ * See <mach/platform.h> for more information.
+ */
+unsigned int ep93xx_chip_revision(void)
+{
+	unsigned int v;
+
+	v = __raw_readl(EP93XX_SYSCON_SYSCFG);
+	v &= EP93XX_SYSCON_SYSCFG_REV_MASK;
+	v >>= EP93XX_SYSCON_SYSCFG_REV_SHIFT;
+	return v;
+}
 
 /*************************************************************************
  * EP93xx peripheral handling
@@ -398,6 +414,56 @@ void __init ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
 	platform_device_register(&ep93xx_i2c_device);
 }
 
+/*************************************************************************
+ * EP93xx SPI peripheral handling
+ *************************************************************************/
+static struct ep93xx_spi_info ep93xx_spi_master_data;
+
+static struct resource ep93xx_spi_resources[] = {
+	{
+		.start	= EP93XX_SPI_PHYS_BASE,
+		.end	= EP93XX_SPI_PHYS_BASE + 0x18 - 1,
+		.flags	= IORESOURCE_MEM,
+	},
+	{
+		.start	= IRQ_EP93XX_SSP,
+		.end	= IRQ_EP93XX_SSP,
+		.flags	= IORESOURCE_IRQ,
+	},
+};
+
+static struct platform_device ep93xx_spi_device = {
+	.name		= "ep93xx-spi",
+	.id		= 0,
+	.dev		= {
+		.platform_data = &ep93xx_spi_master_data,
+	},
+	.num_resources	= ARRAY_SIZE(ep93xx_spi_resources),
+	.resource	= ep93xx_spi_resources,
+};
+
+/**
+ * ep93xx_register_spi() - registers spi platform device
+ * @info: ep93xx board specific spi master info (__initdata)
+ * @devices: SPI devices to register (__initdata)
+ * @num: number of SPI devices to register
+ *
+ * This function registers platform device for the EP93xx SPI controller and
+ * also makes sure that SPI pins are muxed so that I2S is not using those pins.
+ */
+void __init ep93xx_register_spi(struct ep93xx_spi_info *info,
+				struct spi_board_info *devices, int num)
+{
+	/*
+	 * When SPI is used, we need to make sure that I2S is muxed off from
+	 * SPI pins.
+	 */
+	ep93xx_devcfg_clear_bits(EP93XX_SYSCON_DEVCFG_I2SONSSP);
+
+	ep93xx_spi_master_data = *info;
+	spi_register_board_info(devices, num);
+	platform_device_register(&ep93xx_spi_device);
+}
 
 /*************************************************************************
  * EP93xx LEDs
