@@ -30,6 +30,7 @@
 #include <mach/ep93xx_spi.h>
 #include <mach/hardware.h>
 #include <mach/ts72xx.h>
+#include <mach/irqs.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/map.h>
@@ -341,6 +342,32 @@ static struct ep93xx_eth_data __initdata ts72xx_eth_data = {
 	.phy_id		= 1,
 };
 
+static struct resource ts7300_ethoc_resources[] = {
+	[0] = {
+		.start	= TS7300_ETHOC_IO_BASE,
+		.end	= TS7300_ETHOC_IO_BASE + 0x3FF,
+		.flags	= IORESOURCE_MEM,
+	},
+	[1] = {
+		.start	= TS7300_ETHOC_PHYS_BASE,
+		.end	= TS7300_ETHOC_PHYS_BASE + 0x1FFF,
+		.flags	= IORESOURCE_MEM,
+	},	
+	[2] = {
+		.start	= IRQ_EP93XX_EXT3,
+		.end	= IRQ_EP93XX_EXT3,
+		.flags	= IORESOURCE_IRQ,
+	},
+};
+
+static struct platform_device ts7300_ethoc_device = {
+	.name		= "ethoc",
+	.id		= 0,
+	.num_resources 	= 3,
+	.resource	= ts7300_ethoc_resources,
+};
+
+
 /*************************************************************************
  * I2C (make access through TS-72XX "DIO" 2x8 header)
  *************************************************************************/
@@ -431,6 +458,9 @@ static void __init ts72xx_init_machine(void)
 	if (is_max197_installed()) {
 		platform_device_register(&ts72xx_max197_device);
 	}
+
+	if (board_is_ts7300())
+		platform_device_register(&ts7300_ethoc_device);
 
 	/* PWM1 is DIO_6 on TS-72xx header */
 	ep93xx_register_pwm(0, 1);
