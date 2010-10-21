@@ -135,6 +135,9 @@
 
 #define TS7260_SDCARD_PHYS_BASE		0x13000000
 
+#define  TS7300_ETHOC_PHYS_BASE 		0x72100000
+#define  TS7300_ETHOC_IO_BASE 			0x72102000
+
 #ifndef __ASSEMBLY__
 
 static inline int board_is_ts7200(void)
