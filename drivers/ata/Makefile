@@ -91,6 +91,9 @@ obj-$(CONFIG_PATA_RZ1000)	+= pata_rz1000.o
 obj-$(CONFIG_PATA_SAMSUNG_CF)	+= pata_samsung_cf.o
 
 obj-$(CONFIG_PATA_PXA)		+= pata_pxa.o
+obj-$(CONFIG_PATA_TS72XX)	+= pata_ts72xx.o
+obj-$(CONFIG_PATA_TS7200_CF)	+= pata_ts7200_cf.o
+obj-$(CONFIG_PATA_TS9600)	+= pata_ts9600.o
 
 # Should be last but two libata driver
 obj-$(CONFIG_PATA_ACPI)		+= pata_acpi.o
