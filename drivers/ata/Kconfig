@@ -862,5 +862,25 @@ config PATA_LEGACY
 
 	  If unsure, say N.
 
+config PATA_TS72XX
+	bool "TS72XX ATA support"
+	depends on ARCH_EP93XX && MACH_TS72XX
+	help
+	  This option enables support for ATA devices on Technologic Systems SBC.
+
+config PATA_TS7200_CF
+	tristate "TS-7200 Compact Flash support"
+	depends on PATA_TS72XX
+	help
+	  This option enables support for the compact flash control on
+	  Technologic System TS-7200 SBC.
+
+config PATA_TS9600
+	tristate "TS-9600 IDE interface support"
+	depends on PATA_TS72XX && BLK_DEV_IDE_TS9600 != y
+	help
+	  This option enables support for Technologic Systems TS-9600 PC/104 IDE interface.
+
 endif # ATA_SFF
+
 endif # ATA
