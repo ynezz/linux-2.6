@@ -219,6 +219,12 @@ config MACH_TS72XX_SBCINFO
 	  Say 'Y' to add a procfs entry containing some information
 	  related to Technologic Systems TS-72xx SBC.
 
+config MACH_TS72XX_GPIO_KEYS
+	bool "Enable GPIO keys"
+	depends on MACH_TS72XX
+	help
+	  Say 'Y' here to enable GPIO keys on DIO connector.
+	  Current config is KEY_UP for DIO_1 and KEY_DOWN for DIO_2.
 endmenu
 
 endif
