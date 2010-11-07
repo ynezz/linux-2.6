@@ -21,11 +21,13 @@
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/physmap.h>
 #include <linux/gpio.h>
+#include <linux/gpio_keys.h>
 #include <linux/i2c.h>
 #include <linux/i2c-gpio.h>
 #include <linux/mtd/nand.h>
 #include <linux/mtd/partitions.h>
 #include <linux/spi/spi.h>
+#include <linux/input.h>
 
 #include <mach/ep93xx_spi.h>
 #include <mach/hardware.h>
@@ -437,6 +439,36 @@ static struct ep93xx_spi_info ts72xx_spi_info = {
 };
 #endif
 
+#if defined(CONFIG_MACH_TS72XX_GPIO_KEYS)
+#define INIT_KEY(_code, _gpio, _desc)	\
+	{				\
+		.code   = KEY_##_code,	\
+		.gpio   = _gpio,	\
+		.desc   = _desc,	\
+		.wakeup = 1,		\
+		.active_low = 1,	\
+		.type   = EV_KEY,	\
+	}
+
+static struct gpio_keys_button ts72xx_button_table[] = {
+	INIT_KEY(UP,	EP93XX_GPIO_LINE_EGPIO11,	"Up button - DIO_2"),
+	INIT_KEY(DOWN,	EP93XX_GPIO_LINE_EGPIO12,	"Down button - DIO_3"),
+};
+
+static struct gpio_keys_platform_data gpio_keys_data = {
+	.buttons  = ts72xx_button_table,
+	.nbuttons = ARRAY_SIZE(ts72xx_button_table),
+};
+
+static struct platform_device ts72xx_gpio_keys = {
+	.name = "gpio-keys",
+	.dev  = {
+		.platform_data = &gpio_keys_data,
+	},
+	.id   = -1,
+};
+#endif
+
 static void __init ts72xx_init_machine(void)
 {
 	ep93xx_init_devices();
@@ -444,6 +476,10 @@ static void __init ts72xx_init_machine(void)
 	ts72xx_register_sdcard();
 	platform_device_register(&ts72xx_rtc_device);
 	platform_device_register(&ts72xx_wdt_device);
+
+#if defined(CONFIG_MACH_TS72XX_GPIO_KEYS)
+	platform_device_register(&ts72xx_gpio_keys);
+#endif
 
 	ep93xx_register_eth(&ts72xx_eth_data, 1);
 	ep93xx_register_i2c(&ts72xx_i2c_gpio_data,
