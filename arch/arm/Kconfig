@@ -1853,6 +1853,8 @@ source "net/Kconfig"
 
 source "drivers/Kconfig"
 
+source "drivers/lcd-linux/Kconfig"
+
 source "fs/Kconfig"
 
 source "arch/arm/Kconfig.debug"
