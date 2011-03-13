@@ -5,4 +5,7 @@
 
 #include <asm-generic/ioctls.h>
 
+#define TIOC_SBCC485	0x545F /* TS72xx RTS/485 mode clear */
+#define TIOC_SBCS485	0x5460 /* TS72xx RTS/485 mode set */
+
 #endif
