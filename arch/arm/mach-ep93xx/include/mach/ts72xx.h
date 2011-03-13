@@ -73,6 +73,8 @@
 #define TS7260_PM_TTL_UART_ENABLE	0x40
 #define TS7260_PM_SCRATCH_BIT		0x80
 
+#define TS7260_SDCARD_PHYS_BASE		0x13000000
+
 #ifndef __ASSEMBLY__
 
 static inline int board_is_ts7200(void)

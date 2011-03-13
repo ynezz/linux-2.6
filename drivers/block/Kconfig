@@ -510,6 +510,14 @@ config BLK_DEV_HD
 
 	  If unsure, say N.
 
+config BLK_DEV_TS72XX_SDCARD
+	tristate "TS SD card device driver"
+	depends on ARCH_EP93XX && MACH_TS72XX
+	help
+	  SD card driver for ts7260/ts73xx/ts7400 board.
+
+	  If unsure, say N here.
+
 config BLK_DEV_RBD
 	tristate "Rados block device (RBD)"
 	depends on INET && EXPERIMENTAL && BLOCK
