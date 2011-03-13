@@ -280,6 +280,14 @@ config SERIAL_AMBA_PL010
 
 	  If unsure, say N.
 
+config SERIAL_AMBA_PL010_TS72XX
+	bool "Support for RS-485 on AMBA serial port (for TS-72XX SBC)"
+	depends on SERIAL_AMBA_PL010 != n && MACH_TS72XX
+	help
+	  This add support for RS-485 on some Technologic System SBC.
+
+	  If unsure, say N.
+
 config SERIAL_AMBA_PL010_CONSOLE
 	bool "Support for console on AMBA serial port"
 	depends on SERIAL_AMBA_PL010=y
