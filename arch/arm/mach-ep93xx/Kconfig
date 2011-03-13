@@ -7,6 +7,15 @@ config CRUNCH
 	help
 	  Enable kernel support for MaverickCrunch.
 
+config CR1_NFBIT
+	bool "Turn on nF bit in ControlRegister 1"
+	help
+	  Say 'Y' here to force the nF bit on.  Usually this is set
+	  by the bootrom.  If it is not set, then the CPU core will
+	  run from HCLK instead of FCLK, and performance will suffer.
+	  If you see BogoMIPS of about 1/4 of your CPU clock, try
+	  turning this on; your performance should double.
+
 comment "EP93xx Platforms"
 
 choice

@@ -201,7 +201,7 @@ ENTRY(arm920_coherent_kern_range)
  */
 ENTRY(arm920_coherent_user_range)
 	bic	r0, r0, #CACHE_DLINESIZE - 1
-1:	mcr	p15, 0, r0, c7, c10, 1		@ clean D entry
+1:	mcr	p15, 0, r0, c7, c14, 1		@ clean+invalidate D entry
 	mcr	p15, 0, r0, c7, c5, 1		@ invalidate I entry
 	add	r0, r0, #CACHE_DLINESIZE
 	cmp	r0, r1
@@ -402,6 +402,9 @@ __arm920_setup:
 	mrc	p15, 0, r0, c1, c0		@ get control register v4
 	bic	r0, r0, r5
 	orr	r0, r0, r6
+#ifdef CONFIG_CR1_NFBIT
+        orr     r0, r0, #0x40000000             @ set nF
+#endif
 	mov	pc, lr
 	.size	__arm920_setup, . - __arm920_setup
 
