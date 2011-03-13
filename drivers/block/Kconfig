@@ -505,4 +505,11 @@ config BLK_DEV_RBD
 
 	  If unsure, say N.
 
+config BLK_DEV_TS72XX_SDCARD
+	tristate "TS-72XX SD Card support"
+	depends on ARCH_EP93XX && MACH_TS72XX
+	help
+	  This option enables support SD Card control on Technologic Systems
+	  TS-7260 SBC.
+
 endif # BLK_DEV
