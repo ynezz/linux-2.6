@@ -89,6 +89,27 @@ config DUMMY_CONSOLE_ROWS
           The default value is 64, which should fit a 1280x1024 monitor.
           Select 25 if you use a 640x480 resolution by default.
 
+config TS72XX_CONSOLE
+	tristate "TS-72xx text LCD console"
+	depends on ARCH_EP93XX && MACH_TS72XX
+	help
+	  Say Y to build a console driver for TS-72xx LCD (2x7) header.
+	  LCD display must be compatible with HD44780 controller.
+
+config TS72XX_CONSOLE_COLUMNS
+        int "Initial number of console screen columns"
+        depends on TS72XX_CONSOLE
+        default "20"
+        help
+          Dependant to your text LCD, 16 or 20 are legacy values.
+
+config TS72XX_CONSOLE_ROWS
+        int "Initial number of console screen rows"
+        depends on TS72XX_CONSOLE
+        default "4"
+        help
+          Dependant to your text LCD, 2 or 4 are legacy values.
+
 config FRAMEBUFFER_CONSOLE
 	tristate "Framebuffer Console support"
 	depends on FB
