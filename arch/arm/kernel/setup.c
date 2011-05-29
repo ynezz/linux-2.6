@@ -848,6 +848,18 @@ static struct machine_desc * __init setup_machine_tags(unsigned int nr)
 
 	init_tags.mem.start = PHYS_OFFSET;
 
+/* Machine id fixup */
+#ifdef CONFIG_MACH_TS72XX
+	switch (nr) {
+		/* some older redboot on ts-72{50,60} probably */
+		case 0x163:
+			printk("Wrong machine ID 0x163 passed from the bootloader, "
+			       "fixing it to 0x2a1\n");
+			nr = 0x2a1;
+		break;
+	}
+#endif
+
 	/*
 	 * locate machine in the list of supported machines.
 	 */
