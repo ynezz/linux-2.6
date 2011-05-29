@@ -45,6 +45,25 @@ config EP93XX_SDCE3_ASYNC_PHYS_OFFSET
 
 endchoice
 
+choice
+	prompt "EP93xx select memory model"
+	default EP93XX_MEMORY_MODEL_FLATMEM
+
+config EP93XX_MEMORY_MODEL_SPARSEMEM
+	bool "Sparse memory"
+	select ARCH_SPARSEMEM_ENABLE
+	help
+	  Select this option if you have more then one memory bank or for
+	  example more then 64MB RAM. If unsure, say No here.
+
+config EP93XX_MEMORY_MODEL_FLATMEM
+	bool "Flat memory"
+	select ARCH_FLATMEM_ENABLE
+	help
+	  Select this option if you have continuos memory, one memory bank.
+
+endchoice
+
 config MACH_ADSSPHERE
 	bool "Support ADS Sphere"
 	depends on EP93XX_SDCE3_SYNC_PHYS_OFFSET
