@@ -421,6 +421,7 @@ __arm920_setup:
 	mrc	p15, 0, r0, c1, c0		@ get control register v4
 	bic	r0, r0, r5
 	orr	r0, r0, r6
+	orr	r0, r0, #0x40000000		@ set nF bit
 	mov	pc, lr
 	.size	__arm920_setup, . - __arm920_setup
 
