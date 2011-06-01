@@ -919,7 +919,6 @@ static int __nand_unlock(struct mtd_info *mtd, loff_t ofs,
 
 	/* Call wait ready function */
 	status = chip->waitfunc(mtd, chip);
-	udelay(1000);
 	/* See if device thinks it succeeded */
 	if (status & 0x01) {
 		DEBUG(MTD_DEBUG_LEVEL0, "%s: Error status = 0x%08x\n",
@@ -1028,7 +1027,6 @@ int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
 
 	/* Call wait ready function */
 	status = chip->waitfunc(mtd, chip);
-	udelay(1000);
 	/* See if device thinks it succeeded */
 	if (status & 0x01) {
 		DEBUG(MTD_DEBUG_LEVEL0, "%s: Error status = 0x%08x\n",
