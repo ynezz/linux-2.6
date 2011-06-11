@@ -111,26 +111,35 @@ static int ts72xx_nand_device_ready(struct mtd_info *mtd)
 
 static const char *ts72xx_nand_part_probes[] = { "cmdlinepart", NULL };
 
-#define TS72XX_BOOTROM_PART_SIZE	(SZ_16K)
-#define TS72XX_REDBOOT_PART_SIZE	(SZ_2M + SZ_1M)
-
 static struct mtd_partition ts72xx_nand_parts[] = {
 	{
-		.name		= "TS-BOOTROM",
+		.name		= "bootrom",
 		.offset		= 0,
-		.size		= TS72XX_BOOTROM_PART_SIZE,
+		.size		= 0x4000,
 		.mask_flags	= MTD_WRITEABLE,	/* force read-only */
 	}, {
-		.name		= "Linux",
-		.offset		= MTDPART_OFS_RETAIN,
-		.size		= TS72XX_REDBOOT_PART_SIZE,
-				/* leave so much for last partition */
-	}, {
-		.name		= "RedBoot",
+		.name		= "rootfs",
 		.offset		= MTDPART_OFS_APPEND,
-		.size		= MTDPART_SIZ_FULL,
+		.size		= 0x1d00000,
+	}, {
+		.name		= "redboot",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 0x40000,
 		.mask_flags	= MTD_WRITEABLE,	/* force read-only */
-	},
+	}, {
+		.name		= "kernel",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 0x2b8000,
+	}, {
+		.name		= "redboot_fis",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 0x3000,
+		.mask_flags	= MTD_WRITEABLE,	/* force read-only */
+	}, {
+		.name		= "redboot_config",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 0x1000,
+	}
 };
 
 static struct platform_nand_data ts72xx_nand_data = {
