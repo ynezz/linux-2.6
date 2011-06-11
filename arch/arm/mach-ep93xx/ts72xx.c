@@ -110,21 +110,32 @@ static const char *ts72xx_nand_part_probes[] = { "cmdlinepart", NULL };
 
 static struct mtd_partition ts72xx_nand_parts[] = {
 	{
-		.name		= "TS-BOOTROM",
+		.name		= "bootrom",
 		.offset		= 0,
 		.size		= TS72XX_BOOTROM_PART_SIZE,
 		.mask_flags	= MTD_WRITEABLE,	/* force read-only */
 	}, {
-		.name		= "Linux",
-		.offset		= MTDPART_OFS_RETAIN,
-		.size		= TS72XX_REDBOOT_PART_SIZE,
-				/* leave so much for last partition */
-	}, {
-		.name		= "RedBoot",
+		.name		= "rootfs",
 		.offset		= MTDPART_OFS_APPEND,
-		.size		= MTDPART_SIZ_FULL,
+		.size		= 0xa00000, /* 10M */
+	}, {
+		.name		= "overlay",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 0x1200000, /* 18M */
+	}, {
+		.name		= "redboot",
+		.offset		= 0x1d04000,
+		.size		= 0x40000,
 		.mask_flags	= MTD_WRITEABLE,	/* force read-only */
-	},
+	}, {
+		.name		= "kernel",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 0x2b8000,
+	}, {
+		.name		= "redboot config",
+		.offset		= 0x1ffc000,
+		.size		= 0x4000,
+	}
 };
 
 static struct platform_nand_data ts72xx_nand_data = {
