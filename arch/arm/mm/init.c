@@ -347,6 +347,7 @@ void __init arm_memblock_init(struct meminfo *mi, struct machine_desc *mdesc)
 
 	arm_mm_memblock_reserve();
 	arm_dt_memblock_reserve();
+	dma_coherent_reserve();
 
 	/* reserve any platform specific memblock areas */
 	if (mdesc->reserve)
