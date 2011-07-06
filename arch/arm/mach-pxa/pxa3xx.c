@@ -162,7 +162,7 @@ static void pxa3xx_cpu_pm_suspend(void)
 	/* overwrite with the resume address */
 	*p = virt_to_phys(cpu_resume);
 
-	pxa3xx_cpu_suspend(PLAT_PHYS_OFFSET - PAGE_OFFSET);
+	pxa3xx_cpu_suspend(PHYS_OFFSET - PAGE_OFFSET);
 
 	*p = saved_data;
 

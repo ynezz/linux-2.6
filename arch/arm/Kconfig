@@ -655,6 +655,7 @@ config ARCH_PXA
 	select TICK_ONESHOT
 	select PLAT_PXA
 	select SPARSE_IRQ
+	select NO_MACH_MEMORY_H
 	help
 	  Support for Intel/Marvell's PXA2xx/PXA3xx processor line.
 

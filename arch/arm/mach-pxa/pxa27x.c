@@ -299,7 +299,7 @@ void pxa27x_cpu_pm_enter(suspend_state_t state)
 		pxa_cpu_standby();
 		break;
 	case PM_SUSPEND_MEM:
-		pxa27x_cpu_suspend(pwrmode, PLAT_PHYS_OFFSET - PAGE_OFFSET);
+		pxa27x_cpu_suspend(pwrmode, PHYS_OFFSET - PAGE_OFFSET);
 		break;
 	}
 }
