@@ -191,11 +191,17 @@ config VECTORS_BASE
 	help
 	  The base address of exception vectors.
 
+config NO_MACH_MEMORY_H
+	bool
+	help
+	  Select this when mach/memory.h is removed.
+
 config ARM_PATCH_PHYS_VIRT
 	bool "Patch physical to virtual translations at runtime (EXPERIMENTAL)"
-	depends on EXPERIMENTAL
+	depends on EXPERIMENTAL || NO_MACH_MEMORY_H
 	depends on !XIP_KERNEL && MMU
 	depends on !ARCH_REALVIEW || !SPARSEMEM
+	default y if NO_MACH_MEMORY_H
 	help
 	  Patch phys-to-virt and virt-to-phys translation functions at
 	  boot and module load time according to the position of the
@@ -212,6 +218,13 @@ config ARM_PATCH_PHYS_VIRT_16BIT
 	  This option extends the physical to virtual translation patching
 	  to allow physical memory down to a theoretical minimum of 64K
 	  boundaries.
+
+config PHYS_OFFSET
+	hex "Physical address of main memory"
+	depends on !ARM_PATCH_PHYS_VIRT && NO_MACH_MEMORY_H
+	help
+	  Please provide the physical address corresponding to the
+	  location of main memory in your system.
 
 source "init/Kconfig"
 

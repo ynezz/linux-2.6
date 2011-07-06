@@ -16,7 +16,6 @@
 #include <linux/compiler.h>
 #include <linux/const.h>
 #include <linux/types.h>
-#include <mach/memory.h>
 #include <asm/sizes.h>
 
 /*
@@ -200,7 +199,12 @@ static inline unsigned long __phys_to_virt(unsigned long x)
 #endif
 
 #ifndef PHYS_OFFSET
+#ifdef CONFIG_NO_MACH_MEMORY_H
+#define PHYS_OFFSET	UL(CONFIG_PHYS_OFFSET)
+#else
+#include <mach/memory.h>
 #define PHYS_OFFSET	PLAT_PHYS_OFFSET
+#endif
 #endif
 
 /*
