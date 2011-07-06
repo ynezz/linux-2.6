@@ -510,6 +510,7 @@ config ARCH_LOKI
 	select CPU_FEROCEON
 	select GENERIC_CLOCKEVENTS
 	select PLAT_ORION
+	select NO_MACH_MEMORY_H
 	help
 	  Support for the Marvell Loki (88RC8480) SoC.
 
