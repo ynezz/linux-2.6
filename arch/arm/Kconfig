@@ -360,6 +360,7 @@ config ARCH_EBSA110
 	select ISA
 	select NO_IOPORT
 	select ARCH_USES_GETTIMEOFFSET
+	select NO_MACH_MEMORY_H
 	help
 	  This is an evaluation board for the StrongARM processor available
 	  from Digital. It has limited hardware on-board, including an
