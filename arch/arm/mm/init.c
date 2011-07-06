@@ -35,11 +35,7 @@
 #include "mm.h"
 
 #ifdef CONFIG_ZONE_DMA
-#ifdef ARM_DMA_ZONE_SIZE
-unsigned long arm_dma_zone_size = ARM_DMA_ZONE_SIZE;
-#else
 unsigned long arm_dma_zone_size __read_mostly;
-#endif
 EXPORT_SYMBOL(arm_dma_zone_size);
 #endif
 
