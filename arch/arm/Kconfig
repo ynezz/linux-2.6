@@ -625,6 +625,7 @@ config ARCH_TEGRA
 	select HAVE_SCHED_CLOCK
 	select ARCH_HAS_BARRIERS if CACHE_L2X0
 	select ARCH_HAS_CPUFREQ
+	select NO_MACH_MEMORY_H
 	help
 	  This enables support for NVIDIA Tegra based systems (Tegra APX,
 	  Tegra 6xx and Tegra 2 series).
