@@ -820,6 +820,7 @@ config ARCH_SHARK
 	select ZONE_DMA
 	select PCI
 	select ARCH_USES_GETTIMEOFFSET
+	select NO_MACH_MEMORY_H
 	help
 	  Support for the StrongARM based Digital DNARD machine, also known
 	  as "Shark" (<http://www.shark-linux.de/shark.html>).
