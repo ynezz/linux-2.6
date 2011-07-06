@@ -30,6 +30,11 @@
  */
 #define DCACHELINESIZE	32
 
+/*
+ * Address used for uncached access (mapping set up in cache-v4wb-init.c)
+ */
+#define UNCACHEABLE_ADDR 0xfffee000
+
 	.text
 
 /*

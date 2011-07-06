@@ -21,6 +21,7 @@
 #include <asm/irq.h>
 #include <asm/mach-types.h>
 #include <asm/setup.h>
+#include <asm/cacheflush.h>
 #include <asm/hardware/dec21285.h>
 
 #include <asm/mach/irq.h>
@@ -185,6 +186,8 @@ static struct map_desc ebsa285_host_io_desc[] __initdata = {
 
 void __init footbridge_map_io(void)
 {
+	cache_v4wb_init(0x50000000, 0x50010000, CACHE_CPU_SA110);
+
 	/*
 	 * Set up the common mapping first; we need this to
 	 * determine whether we're in host mode or not.

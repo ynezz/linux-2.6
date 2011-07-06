@@ -55,15 +55,8 @@ extern unsigned long __bus_to_pfn(unsigned long);
 #endif
 
 /*
- * Cache flushing area.
- */
-#define FLUSH_BASE		0xf9000000
-
-/*
  * Physical DRAM offset.
  */
 #define PLAT_PHYS_OFFSET		UL(0x00000000)
-
-#define FLUSH_BASE_PHYS		0x50000000
 
 #endif

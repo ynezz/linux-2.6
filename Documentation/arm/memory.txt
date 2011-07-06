@@ -31,9 +31,10 @@ ffff0000	ffff0fff	CPU vector page.
 				CPU supports vector relocation (control
 				register V bit.)
 
-fffe0000	fffeffff	XScale cache flush area.  This is used
-				in proc-xscale.S to flush the whole data
-				cache. (XScale does not have TCM.)
+fffe0000	fffeffff	StrongARM and XScale cache flush area.
+				This is used in cache-v4wb.S and proc-xscale.S
+				to flush the whole data cache.
+				(Neither StrongARM nor XScale have TCM.)
 
 fffe8000	fffeffff	DTCM mapping area for platforms with
 				DTCM mounted inside the CPU.

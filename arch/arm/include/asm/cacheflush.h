@@ -157,6 +157,16 @@ extern void dmac_flush_range(const void *, const void *);
 
 #endif
 
+#ifdef CONFIG_CPU_CACHE_V4WB
+
+enum cache_v4wb_cputype { CACHE_CPU_SA110, CACHE_CPU_SA1100 };
+
+extern void cache_v4wb_init(unsigned long flush_phys_addr,
+			    unsigned long uncached_phys_addr,
+			    enum cache_v4wb_cputype cpu_type);
+
+#endif
+
 /*
  * Copy user data from/to a page which is mapped into a different
  * processes address space.  Really, we want to allow our "user

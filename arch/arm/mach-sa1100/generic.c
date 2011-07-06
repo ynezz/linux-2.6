@@ -21,6 +21,7 @@
 #include <asm/div64.h>
 #include <mach/hardware.h>
 #include <asm/system.h>
+#include <asm/cacheflush.h>
 #include <asm/mach/map.h>
 #include <asm/mach/flash.h>
 #include <asm/irq.h>
@@ -403,12 +404,16 @@ static struct map_desc standard_io_desc[] __initdata = {
 		.pfn		= __phys_to_pfn(0xb0000000),
 		.length		= 0x00200000,
 		.type		= MT_DEVICE
-	},
+	}
 };
+
+#define SA1100_ZERO_BANK	0xe0000000
+#define ICIP_PHYS_ADDR		0x90050000
 
 void __init sa1100_map_io(void)
 {
 	iotable_init(standard_io_desc, ARRAY_SIZE(standard_io_desc));
+	cache_v4wb_init(SA1100_ZERO_BANK, ICIP_PHYS_ADDR, CACHE_CPU_SA1100);
 }
 
 /*

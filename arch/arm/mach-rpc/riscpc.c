@@ -27,6 +27,7 @@
 #include <asm/page.h>
 #include <asm/domain.h>
 #include <asm/setup.h>
+#include <asm/cacheflush.h>
 
 #include <asm/mach/map.h>
 #include <asm/mach/arch.h>
@@ -84,6 +85,9 @@ static struct map_desc rpc_io_desc[] __initdata = {
 static void __init rpc_map_io(void)
 {
 	iotable_init(rpc_io_desc, ARRAY_SIZE(rpc_io_desc));
+#ifdef CPU_CACHE_V4WB
+	cache_v4wb_init(0, 0x10000, CACHE_CPU_SA110);
+#endif
 
 	/*
 	 * Turn off floppy.

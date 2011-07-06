@@ -15,6 +15,7 @@
 #include <asm/mach-types.h>
 #include <asm/leds.h>
 #include <asm/param.h>
+#include <asm/cacheflush.h>
 
 #include <asm/mach/map.h>
 #include <asm/mach/arch.h>
@@ -116,6 +117,7 @@ static struct map_desc shark_io_desc[] __initdata = {
 static void __init shark_map_io(void)
 {
 	iotable_init(shark_io_desc, ARRAY_SIZE(shark_io_desc));
+	cache_v4wb_init(0x80000000, 0x80010000, CACHE_CPU_SA110);
 }
 
 #define IRQ_TIMER 0

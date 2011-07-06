@@ -19,17 +19,6 @@
 #define CACHE_DLINESIZE	32
 
 /*
- * The total size of the data cache.
- */
-#if defined(CONFIG_CPU_SA110)
-# define CACHE_DSIZE	16384
-#elif defined(CONFIG_CPU_SA1100)
-# define CACHE_DSIZE	8192
-#else
-# error Unknown cache size
-#endif
-
-/*
  * This is the size at which it becomes more efficient to
  * clean the whole cache, rather than using the individual
  * cache line maintenance instructions.
@@ -43,11 +32,8 @@
  * 131072  591 591 591   656 657 651
  *  Whole  132 136 132   221 217 207 <---
  */
-#define CACHE_DLIMIT	(CACHE_DSIZE * 4)
+#define CACHE_DLIMIT	32768
 
-	.data
-flush_base:
-	.long	FLUSH_BASE
 	.text
 
 /*
@@ -78,21 +64,14 @@ ENTRY(v4wb_flush_kern_cache_all)
 	mov	ip, #0
 	mcr	p15, 0, ip, c7, c5, 0		@ invalidate I cache
 __flush_whole_cache:
-	ldr	r3, =flush_base
-	ldr	r1, [r3, #0]
-	eor	r1, r1, #CACHE_DSIZE
+	ldr	r3, =cache_v4wb_params
+	ldmia	r3, {r1, r2}
+	eor	r1, r1, #32768			@ FLUSH_OFF_ALT
 	str	r1, [r3, #0]
-	add	r2, r1, #CACHE_DSIZE
+	add	r2, r1, r2
 1:	ldr	r3, [r1], #32
 	cmp	r1, r2
 	blo	1b
-#ifdef FLUSH_BASE_MINICACHE
-	add	r2, r2, #FLUSH_BASE_MINICACHE - FLUSH_BASE
-	sub	r1, r2, #512			@ only 512 bytes
-1:	ldr	r3, [r1], #32
-	cmp	r1, r2
-	blo	1b
-#endif
 	mcr	p15, 0, ip, c7, c10, 4		@ drain write buffer
 	mov	pc, lr
 

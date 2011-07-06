@@ -23,6 +23,7 @@
 #include <asm/pgtable.h>
 #include <asm/page.h>
 #include <asm/system.h>
+#include <asm/cacheflush.h>
 
 #include <asm/mach/arch.h>
 #include <asm/mach/irq.h>
@@ -114,9 +115,12 @@ static struct map_desc ebsa110_io_desc[] __initdata = {
 	}
 };
 
+#define SRAM_PHYS		0x40000000
+
 static void __init ebsa110_map_io(void)
 {
 	iotable_init(ebsa110_io_desc, ARRAY_SIZE(ebsa110_io_desc));
+	cache_v4wb_init(SRAM_PHYS, TRICK4_PHYS, CACHE_CPU_SA110);
 }
 
 

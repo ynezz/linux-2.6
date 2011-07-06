@@ -54,10 +54,5 @@
 #define PIT_BASE		0xfc000000
 #define SOFT_BASE		0xfd000000
 
-/*
- * RAM definitions
- */
-#define UNCACHEABLE_ADDR	0xff000000	/* IRQ_STAT */
-
 #endif
 
