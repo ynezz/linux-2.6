@@ -34,6 +34,15 @@
 
 #include "mm.h"
 
+#ifdef CONFIG_ZONE_DMA
+#ifdef ARM_DMA_ZONE_SIZE
+unsigned long arm_dma_zone_size = ARM_DMA_ZONE_SIZE;
+#else
+unsigned long arm_dma_zone_size __read_mostly;
+#endif
+EXPORT_SYMBOL(arm_dma_zone_size);
+#endif
+
 static unsigned long phys_initrd_start __initdata = 0;
 static unsigned long phys_initrd_size __initdata = 0;
 
@@ -267,17 +276,14 @@ static void __init arm_bootmem_free(unsigned long min, unsigned long max_low,
 #endif
 	}
 
-#ifdef ARM_DMA_ZONE_SIZE
-#ifndef CONFIG_ZONE_DMA
-#error ARM_DMA_ZONE_SIZE set but no DMA zone to limit allocations
-#endif
-
+#ifdef CONFIG_ZONE_DMA
 	/*
 	 * Adjust the sizes according to any special requirements for
 	 * this machine type.
 	 */
-	arm_adjust_dma_zone(zone_size, zhole_size,
-		ARM_DMA_ZONE_SIZE >> PAGE_SHIFT);
+	if (arm_dma_zone_size)
+		arm_adjust_dma_zone(zone_size, zhole_size,
+			arm_dma_zone_size >> PAGE_SHIFT);
 #endif
 
 	free_area_init_node(0, zone_size, min, zhole_size);

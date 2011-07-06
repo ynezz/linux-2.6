@@ -209,10 +209,13 @@ static inline unsigned long __phys_to_virt(unsigned long x)
  * allocations.  This must be the smallest DMA mask in the system,
  * so a successful GFP_DMA allocation will always satisfy this.
  */
-#ifndef ARM_DMA_ZONE_SIZE
+#ifndef CONFIG_ZONE_DMA
 #define ISA_DMA_THRESHOLD	(0xffffffffULL)
 #else
-#define ISA_DMA_THRESHOLD	(PHYS_OFFSET + ARM_DMA_ZONE_SIZE - 1)
+#define ISA_DMA_THRESHOLD	({ \
+	extern unsigned long arm_dma_zone_size; \
+	arm_dma_zone_size ? \
+		(PHYS_OFFSET + arm_dma_zone_size - 1) : 0xffffffffULL; })
 #endif
 
 /*
