@@ -25,6 +25,7 @@
 #include <linux/irq.h>
 
 #include <asm/mach/map.h>
+#include <asm/suspend.h>
 #include <mach/hardware.h>
 #include <mach/irqs.h>
 #include <mach/gpio.h>
