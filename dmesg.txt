@@ -1,0 +1,185 @@
+ts7250/32M:
+
+	[    0.000000] Linux version 3.0.0-rc6+ (ynezz@ntbk) (gcc version 4.5.3 20110311 (prerelease) (GCC) ) #2 PREEMPT Thu Jul 14 09:42:04 CEST 2011
+	[    0.000000] CPU: ARM920T [41129200] revision 0 (ARMv4T), cr=40007177                          
+	[    0.000000] CPU: VIVT data cache, VIVT instruction cache
+	[    0.000000] Wrong machine ID 0x163 passed from the bootloader, fixing it to 0x2a1
+	[    0.000000] Machine: Technologic Systems TS-72xx SBC
+	[    0.000000] Memory policy: ECC disabled, Data cache writeback
+	[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 8016
+	[    0.000000] Kernel command line: console=ttyAM0,115200 lpj=498688 ip=192.168.1.10 root=/dev/nfs nfsroot=192.168.1.90:/opt/devel/oe/ts72xx-test/tmp-uclibc-angstrom-2s
+	[    0.000000] PID hash table entries: 128 (order: -3, 512 bytes)
+	[    0.000000] Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+	[    0.000000] Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+	[    0.000000] Memory: 8MB 8MB 8MB 8MB = 32MB total
+	[    0.000000] Memory: 28560k/28560k available, 4208k reserved, 0K highmem
+	[    0.000000] Virtual kernel memory layout:
+	[    0.000000]     vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+	[    0.000000]     fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
+	[    0.000000]     DMA     : 0xffc00000 - 0xffe00000   (   2 MB)
+	[    0.000000]     vmalloc : 0xc6000000 - 0xfe800000   ( 904 MB)
+	[    0.000000]     lowmem  : 0xc0000000 - 0xc5800000   (  88 MB)
+	[    0.000000]     modules : 0xbf000000 - 0xc0000000   (  16 MB)
+	[    0.000000]       .text : 0xc0008000 - 0xc036f000   (3484 kB)
+	[    0.000000]       .init : 0xc036f000 - 0xc038d000   ( 120 kB)
+	[    0.000000]       .data : 0xc038e000 - 0xc03ab1e0   ( 117 kB)
+	[    0.000000]        .bss : 0xc03ab204 - 0xc03caa18   ( 127 kB)
+	[    0.000000] Preemptible hierarchical RCU implementation.
+	[    0.000000] NR_IRQS:120
+	[    0.000000] VIC @fefb0000: id 0x00041190, vendor 0x41
+	[    0.000000] VIC @fefc0000: id 0x00041190, vendor 0x41
+	[    0.000000] Console: colour dummy device 80x30
+	[    0.000000] Calibrating delay loop (skipped) preset value.. 99.73 BogoMIPS (lpj=498688)
+	[    0.000000] pid_max: default: 32768 minimum: 301
+	[    0.000000] Security Framework initialized
+	[    0.000000] Mount-cache hash table entries: 512
+	[    0.000000] CPU: Testing write buffer coherency: ok
+	[    0.000000] devtmpfs: initialized
+	[    1.420000] NET: Registered protocol family 16
+	[    1.420000] ep93xx clock: PLL1 running at 400 MHz, PLL2 at 192 MHz
+	[    1.420000] ep93xx clock: FCLK 200 MHz, HCLK 100 MHz, PCLK 50 MHz
+	[    1.420000] ep93xx dma_m2p: M2P DMA subsystem initialized
+	[    1.440000] bio: create slab <bio-0> at 0
+	[    1.520000] NET: Registered protocol family 2
+	[    1.520000] IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+	[    1.530000] TCP established hash table entries: 1024 (order: 1, 8192 bytes)
+	[    1.530000] TCP bind hash table entries: 1024 (order: 0, 4096 bytes)
+	[    1.530000] TCP: Hash tables configured (established 1024 bind 1024)
+	[    1.530000] TCP reno registered
+	[    1.530000] UDP hash table entries: 256 (order: 0, 4096 bytes)
+	[    1.530000] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+	[    1.530000] NET: Registered protocol family 1
+	[    1.530000] RPC: Registered named UNIX socket transport module.
+	[    1.530000] RPC: Registered udp transport module.
+	[    1.530000] RPC: Registered tcp transport module.
+	[    1.530000] RPC: Registered tcp NFSv4.1 backchannel transport module.
+	[    1.550000] JFFS2 version 2.2. (NAND) �© 2001-2006 Red Hat, Inc.
+	[    1.550000] msgmni has been set to 55
+	[    1.560000] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 254)
+	[    1.560000] io scheduler noop registered
+	[    1.560000] io scheduler cfq registered (default)
+	[    1.570000] Serial: AMBA driver
+	[    1.570000] apb:uart1: ttyAM0 at MMIO 0x808c0000 (irq = 52) is a AMBA
+	[    1.920000] console [ttyAM0] enabled
+	[    1.950000] apb:uart2: ttyAM1 at MMIO 0x808d0000 (irq = 54) is a AMBA
+	[    1.970000] apb:uart3: ttyAM2 at MMIO 0x808e0000 (irq = 55) is a AMBA
+	[    2.000000] loop: module loaded
+	[    2.020000] NAND device: Manufacturer ID: 0xec, Chip ID: 0x75 (Samsung NAND 32MiB 3,3V 8-bit)
+	[    2.030000] Scanning device for bad blocks
+	[    2.190000] Creating 3 MTD partitions on "gen_nand":
+	[    2.190000] 0x000000000000-0x000000004000 : "TS-BOOTROM"
+	[    2.210000] 0x000000004000-0x000001d04000 : "Linux"
+	[    2.220000] 0x000001d04000-0x000002000000 : "RedBoot"
+	[    2.230000] ep93xx-eth version 0.1 loading
+	[    2.240000] eth0: ep93xx on-chip ethernet, IRQ 39, 00:d0:69:43:55:77
+	[    2.260000] ts72xx-wdt ts72xx-wdt: TS-72xx Watchdog driver
+	[    2.270000] TCP cubic registered
+	[    2.270000] NET: Registered protocol family 17
+	[    2.290000] Registering the dns_resolver key type
+	[    2.340000] IP-Config: Guessing netmask 255.255.255.0
+	[    2.340000] IP-Config: Complete:
+	[    2.340000]      device=eth0, addr=192.168.1.10, mask=255.255.255.0, gw=255.255.255.255,
+	[    2.360000]      host=192.168.1.10, domain=, nis-domain=(none),
+	[    2.370000]      bootserver=255.255.255.255, rootserver=192.168.1.90, rootpath=
+	[    2.460000] VFS: Mounted root (nfs filesystem) on device 0:13.
+	[    2.500000] devtmpfs: mounted
+	[    2.500000] Freeing init memory: 120K
+
+ts7300/128M:
+
+	[    0.000000] Linux version 3.0.0-rc6+ (ynezz@ntbk) (gcc version 4.5.3 20110311 (prerelease) (GCC) ) #2 PREEMPT Thu Jul 14 09:42:04 CEST 2011
+	[    0.000000] CPU: ARM920T [41129200] revision 0 (ARMv4T), cr=c0007177
+	[    0.000000] CPU: VIVT data cache, VIVT instruction cache
+	[    0.000000] Wrong machine ID 0x163 passed from the bootloader, fixing it to 0x2a1
+	[    0.000000] Machine: Technologic Systems TS-72xx SBC
+	[    0.000000] Ignoring RAM at e0000000-e07fffff (vmalloc region overlap).
+	[    0.000000] Ignoring RAM at e1000000-e17fffff (vmalloc region overlap).
+	[    0.000000] Ignoring RAM at e2000000-e27fffff (vmalloc region overlap).
+	[    0.000000] Ignoring RAM at e3000000-e37fffff (vmalloc region overlap).
+	[    0.000000] Ignoring RAM at e4000000-e47fffff (vmalloc region overlap).
+	[    0.000000] Ignoring RAM at e5000000-e57fffff (vmalloc region overlap).
+	[    0.000000] Ignoring RAM at e6000000-e67fffff (vmalloc region overlap).
+	[    0.000000] Ignoring RAM at e7000000-e77fffff (vmalloc region overlap).
+	[    0.000000] Memory policy: ECC disabled, Data cache writeback
+	[    0.000000] On node 0 totalpages: 16384
+	[    0.000000] free_area_init_node: node 0, pgdat c03aab54, node_mem_map c03cb000
+	[    0.000000]   Normal zone: 240 pages used for memmap
+	[    0.000000]   Normal zone: 0 pages reserved
+	[    0.000000]   Normal zone: 16144 pages, LIFO batch:3
+	[    0.000000] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
+	[    0.000000] pcpu-alloc: [0] 0 
+	[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 16144
+	[    0.000000] Kernel command line: console=ttyAM0,115200 debug earlyprintk=ttyAM0 ip=192.168.1.10 root=/dev/nfs nfsroot=192.168.1.90:/opt/devel/oe/ts72xx-test/tmp-ucls
+	[    0.000000] PID hash table entries: 256 (order: -2, 1024 bytes)
+	[    0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+	[    0.000000] Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+	[    0.000000] Memory: 8MB 8MB 8MB 8MB 8MB 8MB 8MB 8MB = 64MB total
+	[    0.000000] Memory: 61048k/61048k available, 4488k reserved, 0K highmem
+	[    0.000000] Virtual kernel memory layout:
+	[    0.000000]     vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+	[    0.000000]     fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
+	[    0.000000]     DMA     : 0xffc00000 - 0xffe00000   (   2 MB)
+	[    0.000000]     vmalloc : 0xc8000000 - 0xfe800000   ( 872 MB)
+	[    0.000000]     lowmem  : 0xc0000000 - 0xc7800000   ( 120 MB)
+	[    0.000000]     modules : 0xbf000000 - 0xc0000000   (  16 MB)
+	[    0.000000]       .text : 0xc0008000 - 0xc036f000   (3484 kB)
+	[    0.000000]       .init : 0xc036f000 - 0xc038d000   ( 120 kB)
+	[    0.000000]       .data : 0xc038e000 - 0xc03ab1e0   ( 117 kB)
+	[    0.000000]        .bss : 0xc03ab204 - 0xc03caa18   ( 127 kB)
+	[    0.000000] Preemptible hierarchical RCU implementation.
+	[    0.000000] NR_IRQS:120
+	[    0.000000] VIC @fefb0000: id 0x00041190, vendor 0x41
+	[    0.000000] VIC @fefc0000: id 0x00041190, vendor 0x41
+	[    0.000000] Console: colour dummy device 80x30
+	[   35.890000] Calibrating delay loop... 99.73 BogoMIPS (lpj=498688)
+	[   35.970000] pid_max: default: 32768 minimum: 301
+	[   35.970000] Security Framework initialized
+	[   35.970000] Mount-cache hash table entries: 512
+	[   35.970000] CPU: Testing write buffer coherency: ok
+	[   35.970000] devtmpfs: initialized
+	[   35.980000] NET: Registered protocol family 16
+	[   35.980000] ep93xx clock: PLL1 running at 400 MHz, PLL2 at 192 MHz
+	[   35.980000] ep93xx clock: FCLK 200 MHz, HCLK 100 MHz, PCLK 50 MHz
+	[   35.990000] ep93xx dma_m2p: M2P DMA subsystem initialized
+	[   36.000000] bio: create slab <bio-0> at 0
+	[   36.080000] NET: Registered protocol family 2
+	[   36.080000] IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+	[   36.090000] TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+	[   36.090000] TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
+	[   36.090000] TCP: Hash tables configured (established 2048 bind 2048)
+	[   36.090000] TCP reno registered
+	[   36.090000] UDP hash table entries: 256 (order: 0, 4096 bytes)
+	[   36.090000] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+	[   36.090000] NET: Registered protocol family 1
+	[   36.100000] RPC: Registered named UNIX socket transport module.
+	[   36.100000] RPC: Registered udp transport module.
+	[   36.100000] RPC: Registered tcp transport module.
+	[   36.100000] RPC: Registered tcp NFSv4.1 backchannel transport module.
+	[   36.120000] JFFS2 version 2.2. (NAND) �© 2001-2006 Red Hat, Inc.
+	[   36.120000] msgmni has been set to 119
+	[   36.130000] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 254)
+	[   36.130000] io scheduler noop registered
+	[   36.130000] io scheduler cfq registered (default)
+	[   36.130000] Serial: AMBA driver
+	[   36.130000] apb:uart1: ttyAM0 at MMIO 0x808c0000 (irq = 52) is a AMBA
+	[   36.570000] console [ttyAM0] enabled
+	[   36.590000] apb:uart2: ttyAM1 at MMIO 0x808d0000 (irq = 54) is a AMBA
+	[   36.610000] apb:uart3: ttyAM2 at MMIO 0x808e0000 (irq = 55) is a AMBA
+	[   36.640000] loop: module loaded
+	[   36.650000] No NAND device found.
+	[   36.650000] ep93xx-eth version 0.1 loading
+	[   36.670000] eth0: ep93xx on-chip ethernet, IRQ 39, 00:d0:69:41:14:e6
+	[   36.680000] ts72xx-wdt ts72xx-wdt: TS-72xx Watchdog driver
+	[   36.680000] Registered led device: platform:grled
+	[   36.690000] Registered led device: platform:rdled
+	[   36.700000] TCP cubic registered
+	[   36.710000] NET: Registered protocol family 17
+	[   36.710000] Registering the dns_resolver key type
+	[   36.770000] IP-Config: Guessing netmask 255.255.255.0
+	[   36.770000] IP-Config: Complete:
+	[   36.770000]      device=eth0, addr=192.168.1.10, mask=255.255.255.0, gw=255.255.255.255,
+	[   36.780000]      host=192.168.1.10, domain=, nis-domain=(none),
+	[   36.790000]      bootserver=255.255.255.255, rootserver=192.168.1.90, rootpath=
+	[   36.820000] VFS: Mounted root (nfs filesystem) on device 0:13.
+	[   36.830000] devtmpfs: mounted
+	[   36.830000] Freeing init memory: 120K
