@@ -243,6 +243,28 @@ static void __init ts72xx_init_machine(void)
 	ep93xx_register_eth(&ts72xx_eth_data, 1);
 }
 
+/* Use more reliable CPLD watchdog to perform the reset */
+static void ts72xx_restart(char cmd, const char *mode)
+{
+	void __iomem *ctrl;
+	void __iomem *feed;
+
+	ctrl = ioremap(ts72xx_wdt_resources[0].start,
+			  resource_size(&ts72xx_wdt_resources[0]));
+	feed = ioremap(ts72xx_wdt_resources[1].start,
+		       resource_size(&ts72xx_wdt_resources[1]));
+
+	if (ctrl && feed) {
+		__raw_writeb(0x5, feed);
+		__raw_writeb(0x1, ctrl);
+
+		while (1)
+			;
+	}
+
+	ep93xx_restart(cmd, mode);
+}
+
 MACHINE_START(TS72XX, "Technologic Systems TS-72xx SBC")
 	/* Maintainer: Lennert Buytenhek <buytenh@wantstofly.org> */
 	.atag_offset	= 0x100,
@@ -251,5 +273,5 @@ MACHINE_START(TS72XX, "Technologic Systems TS-72xx SBC")
 	.handle_irq	= vic_handle_irq,
 	.timer		= &ep93xx_timer,
 	.init_machine	= ts72xx_init_machine,
-	.restart	= ep93xx_restart,
+	.restart	= ts72xx_restart,
 MACHINE_END
