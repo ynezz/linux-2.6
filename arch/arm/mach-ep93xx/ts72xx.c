@@ -23,6 +23,11 @@
 #include <linux/mtd/nand.h>
 #include <linux/mtd/partitions.h>
 
+#define TS72XX_USE_ST7735FB
+#ifdef TS72XX_USE_ST7735FB
+#include <video/st7735fb.h>
+#endif
+
 #include <mach/hardware.h>
 #include <mach/ts72xx.h>
 #include <mach/ep93xx_spi.h>
@@ -319,6 +324,49 @@ static struct lis3lv02d_platform_data lis3_pdata = {
 #endif
 };
 
+#ifdef TS72XX_USE_ST7735FB
+#define ST7735FB_CS EP93XX_GPIO_LINE_EGPIO11
+static int ts72xx_spi_lcd_setup(struct spi_device *spi)
+{
+	int err;
+	int gpio = ST7735FB_CS;
+
+	err = gpio_request(gpio, spi->modalias);
+	if (err)
+		return err;
+
+	gpio_direction_output(gpio, 1);
+	return 0;
+}
+
+static void ts72xx_spi_lcd_cleanup(struct spi_device *spi)
+{
+	int gpio = ST7735FB_CS;
+
+	gpio_set_value(gpio, 1);
+	gpio_direction_input(gpio);
+	gpio_free(gpio);
+}
+
+static void ts72xx_spi_lcd_cs_control(struct spi_device *spi, int value)
+{
+	gpio_set_value(ST7735FB_CS, value);
+}
+
+static const struct st7735fb_platform_data st7735fb_pdata = {
+	.rst_gpio	= EP93XX_GPIO_LINE_EGPIO15, /* DIO-6 - reset */
+	.dc_gpio	= EP93XX_GPIO_LINE_EGPIO14, /* DIO-7 - data/command */
+	.x_offset	= 0,
+	.y_offset	= 0,
+};
+
+static struct ep93xx_spi_chip_ops ts72xx_spi_lcd_ops = {
+	.setup = ts72xx_spi_lcd_setup,
+	.cleanup = ts72xx_spi_lcd_cleanup,
+	.cs_control = ts72xx_spi_lcd_cs_control,
+};
+#endif
+
 static struct spi_board_info ts72xx_spi_devices[] __initdata = {
 	{
 		.modalias = "lis3lv02d_spi",
@@ -335,6 +383,18 @@ static struct spi_board_info ts72xx_spi_devices[] __initdata = {
 		.irq = EP93XX_GPIO_TO_IRQ(SPI_LIS3_IRQ),
 #endif
 	},
+#ifdef TS72XX_USE_ST7735FB
+	{
+		.modalias	= "adafruit_tft18",
+		.controller_data = &ts72xx_spi_lcd_ops,
+		.platform_data	= &st7735fb_pdata,
+		.irq		= -1,
+		.max_speed_hz	= 10 * 1000 * 1000,
+		.bus_num	= 0,
+		.chip_select	= 1,
+		.mode		= SPI_MODE_0,
+	},
+#endif
 };
 
 static struct ep93xx_spi_info ts72xx_spi_info = {
