@@ -97,7 +97,7 @@ enum lis3lv02d_reg {
 
 enum lis3_who_am_i {
 	WAI_3DC		= 0x33,	/* 8 bits: LIS3DC, HP3DC */
-	WAI_12B		= 0x3A, /* 12 bits: LIS3LV02D[LQ]... */
+	WAI_12B		= 0x32, /* 12 bits: LIS331HH */
 	WAI_8B		= 0x3B, /* 8 bits: LIS[23]02D[LQ]... */
 	WAI_6B		= 0x52, /* 6 bits: LIS331DLF - not supported */
 };
