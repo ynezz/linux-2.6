@@ -17,11 +17,16 @@
 #include <linux/platform_device.h>
 #include <linux/io.h>
 #include <linux/m48t86.h>
+#include <linux/gpio.h>
+#include <linux/spi/spi.h>
+#include <linux/lis3lv02d.h>
 #include <linux/mtd/nand.h>
 #include <linux/mtd/partitions.h>
 
 #include <mach/hardware.h>
 #include <mach/ts72xx.h>
+#include <mach/ep93xx_spi.h>
+#include <mach/gpio-ep93xx.h>
 
 #include <asm/hardware/vic.h>
 #include <asm/mach-types.h>
@@ -247,6 +252,102 @@ static struct ep93xx_eth_data __initdata ts72xx_eth_data = {
 	.phy_id		= 1,
 };
 
+//#define SPI_LIS3_IRQ		EP93XX_GPIO_LINE_EGPIO8
+#ifdef SPI_LIS3_IRQ
+ #define EP93XX_GPIO_IRQ_BASE	64
+ #define EP93XX_GPIO_TO_IRQ(x)	EP93XX_GPIO_IRQ_BASE + x
+#endif
+#define SPI_LIS3_CHIPSELECT	EP93XX_GPIO_LINE_EGPIO9
+
+static int ts72xx_spi_setup(struct spi_device *spi)
+{
+	int err;
+	int gpio_cs = SPI_LIS3_CHIPSELECT;
+#ifdef SPI_LIS3_IRQ
+	int gpio_irq = SPI_LIS3_IRQ;
+#endif
+
+	err = gpio_request(gpio_cs, spi->modalias);
+	if (err)
+		return err;
+
+	gpio_direction_output(gpio_cs, 1);
+
+#ifdef SPI_LIS3_IRQ
+	err = gpio_request(gpio_irq, spi->modalias);
+	if (err)
+		return err;
+
+	gpio_direction_input(gpio_irq);
+#endif
+
+	return 0;
+}
+
+static void ts72xx_spi_cleanup(struct spi_device *spi)
+{
+	int gpio_cs = SPI_LIS3_CHIPSELECT;
+
+#ifdef SPI_LIS3_IRQ
+	int gpio_irq = SPI_LIS3_IRQ;
+	gpio_free(gpio_irq);
+#endif
+
+	gpio_set_value(gpio_cs, 1);
+	gpio_direction_input(gpio_cs);
+	gpio_free(gpio_cs);
+}
+
+static void ts72xx_spi_cs_control(struct spi_device *spi, int value)
+{
+	gpio_set_value(SPI_LIS3_CHIPSELECT, value);
+}
+
+static struct ep93xx_spi_chip_ops ts72xx_spi_ops = {
+	.setup = ts72xx_spi_setup,
+	.cleanup = ts72xx_spi_cleanup,
+	.cs_control = ts72xx_spi_cs_control,
+};
+
+static struct lis3lv02d_platform_data lis3_pdata = {
+	.wakeup_flags	= LIS3_WAKEUP_X_LO | LIS3_WAKEUP_X_HI |
+			  LIS3_WAKEUP_Y_LO | LIS3_WAKEUP_Y_HI |
+			  LIS3_WAKEUP_Z_LO | LIS3_WAKEUP_Z_HI,
+	.wakeup_thresh	= 10,
+#ifdef SPI_LIS3_IRQ
+	.irq_cfg	= LIS3_IRQ1_DATA_READY,
+#endif
+};
+
+static struct spi_board_info ts72xx_spi_devices[] __initdata = {
+	{
+		.modalias = "lis3lv02d_spi",
+		.controller_data = &ts72xx_spi_ops,
+		.platform_data = &lis3_pdata,
+		/*
+		 * We use 10 MHz even though the maximum is 7.4 MHz. The driver
+		 * will limit it automatically to max. frequency.
+		 */
+		.max_speed_hz = 10 * 1000 * 1000,
+		.bus_num = 0,
+		.chip_select = 0,
+#ifdef SPI_LIS3_IRQ
+		.irq = EP93XX_GPIO_TO_IRQ(SPI_LIS3_IRQ),
+#endif
+	},
+};
+
+static struct ep93xx_spi_info ts72xx_spi_info = {
+	.num_chipselect = ARRAY_SIZE(ts72xx_spi_devices),
+	.use_dma = true,
+};
+
+static void __init ts72xx_register_spi(void)
+{
+	ep93xx_register_spi(&ts72xx_spi_info, ts72xx_spi_devices,
+			    ARRAY_SIZE(ts72xx_spi_devices));
+}
+
 static void __init ts72xx_init_machine(void)
 {
 	ep93xx_init_devices();
@@ -255,6 +356,7 @@ static void __init ts72xx_init_machine(void)
 	platform_device_register(&ts72xx_wdt_device);
 
 	ep93xx_register_eth(&ts72xx_eth_data, 1);
+	ts72xx_register_spi();
 }
 
 /* Use more reliable CPLD watchdog to perform the reset */
