@@ -70,7 +70,12 @@ static struct map_desc ts72xx_io_desc[] __initdata = {
 		.pfn		= __phys_to_pfn(TS72XX_RTC_DATA_PHYS_BASE),
 		.length		= TS72XX_RTC_DATA_SIZE,
 		.type		= MT_DEVICE,
-	}
+	}, {
+		.virtual	= TS72XX_COM2_MODE_VIRT_BASE,
+		.pfn 		= __phys_to_pfn(TS72XX_COM2_MODE_PHYS_BASE),
+		.length 	= TS72XX_COM2_MODE_SIZE,
+		.type 		= MT_DEVICE,
+	},
 };
 
 static void __init ts72xx_map_io(void)
@@ -404,6 +409,14 @@ static struct ep93xx_spi_info ts72xx_spi_info = {
 
 static void __init ts72xx_register_spi(void)
 {
+	/*
+	 * Just to be sure: we always deselect the boot SPI EEPROM
+	 * chipselect before starting to register any SPI devices.
+	 * Otherwise we might accidentaly overwrite the boot EEPROM
+	 * contents.
+	 */
+	__raw_writel(0, TS72XX_COM2_MODE_VIRT_BASE);
+
 	ep93xx_register_spi(&ts72xx_spi_info, ts72xx_spi_devices,
 			    ARRAY_SIZE(ts72xx_spi_devices));
 }
