@@ -282,14 +282,14 @@ static void st7735_set_addr_win(struct st7735fb_par *par,
 {
 	st7735_write_cmd(par, ST7735_CASET);
 	st7735_write_data(par, 0x00);
-	st7735_write_data(par, xs+2);
+	st7735_write_data(par, xs+par->x_offset);
 	st7735_write_data(par, 0x00);
-	st7735_write_data(par, xe+2);
+	st7735_write_data(par, xe+par->x_offset);
 	st7735_write_cmd(par, ST7735_RASET);
 	st7735_write_data(par, 0x00);
-	st7735_write_data(par, ys+1);
+	st7735_write_data(par, ys+par->y_offset);
 	st7735_write_data(par, 0x00);
-	st7735_write_data(par, ye+1);
+	st7735_write_data(par, ye+par->y_offset);
 }
 
 static void st7735_reset(struct st7735fb_par *par)
@@ -506,6 +506,8 @@ static int __devinit st7735fb_probe(struct spi_device *spi)
 	par->rst = pdata->rst_gpio;
 	par->dc = pdata->dc_gpio;
 	par->lcd_type = pdata->lcd_type;
+	par->x_offset = pdata->x_offset;
+	par->y_offset = pdata->y_offset;
 	par->buf = kmalloc(1, GFP_KERNEL);
 
 #ifdef __LITTLE_ENDIAN
