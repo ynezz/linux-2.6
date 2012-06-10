@@ -45,12 +45,16 @@ struct st7735fb_par {
 	u16 *ssbuf;
 	u8 *buf;
 	u8 lcd_type;
+	u8 x_offset;
+	u8 y_offset;
 };
 
 struct st7735fb_platform_data {
 	int rst_gpio;
 	int dc_gpio;
 	u8 lcd_type;
+	u8 x_offset;
+	u8 y_offset;
 };
 
 /* ST7735 Commands */
