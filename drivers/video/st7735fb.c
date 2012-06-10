@@ -337,16 +337,24 @@ static void st7735fb_deferred_io(struct fb_info *info,
 
 static int st7735fb_init_display(struct st7735fb_par *par)
 {
-	/* TODO: Need some error checking on gpios */
+	int ret;
 
-        /* Request GPIOs and initialize to default values */
-        gpio_request_one(par->rst, GPIOF_OUT_INIT_HIGH,
-			"ST7735 Reset Pin");
-        gpio_request_one(par->dc, GPIOF_OUT_INIT_LOW,
-			"ST7735 Data/Command Pin");
+	ret = gpio_request_one(par->rst, GPIOF_OUT_INIT_HIGH,
+			       "ST7735 Reset Pin");
+	if (ret) {
+		pr_err("failed to request RS pin GPIO\n");
+		return ret;
+	}
+
+	ret = gpio_request_one(par->dc, GPIOF_OUT_INIT_LOW,
+			       "ST7735 Data/Command Pin");
+	if (ret) {
+		gpio_free(par->rst);
+		pr_err("failed to request D/C pin GPIO\n");
+		return ret;
+	}
 
 	st7735_reset(par);
-
 	st7735_run_cfg_script(par);
 
 	return 0;
@@ -435,7 +443,7 @@ static struct fb_deferred_io st7735fb_defio = {
 	.deferred_io	= st7735fb_deferred_io,
 };
 
-static int __devinit st7735fb_probe (struct spi_device *spi)
+static int __devinit st7735fb_probe(struct spi_device *spi)
 {
 	int chip = spi_get_device_id(spi)->driver_data;
 	struct st7735fb_platform_data *pdata = spi->dev.platform_data;
@@ -545,6 +553,7 @@ fballoc_fail:
 static int __devexit st7735fb_remove(struct spi_device *spi)
 {
 	struct fb_info *info = spi_get_drvdata(spi);
+	struct st7735fb_par *par = info->par;
 
 	spi_set_drvdata(spi, NULL);
 
@@ -554,7 +563,8 @@ static int __devexit st7735fb_remove(struct spi_device *spi)
 		framebuffer_release(info);
 	}
 
-	/* TODO: release gpios */
+	gpio_free(par->rst);
+	gpio_free(par->dc);
 
 	return 0;
 }
