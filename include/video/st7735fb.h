@@ -31,6 +31,12 @@ enum st7735_cmd {
 	ST7735_DELAY
 };
 
+/* Display types */
+enum st7735_lcd_type {
+	ST7735_LCD_TYPE_R,
+	ST7735_LCD_TYPE_B,
+};
+
 struct st7735fb_par {
 	struct spi_device *spi;
 	struct fb_info *info;
@@ -38,11 +44,13 @@ struct st7735fb_par {
 	int dc;
 	u16 *ssbuf;
 	u8 *buf;
+	u8 lcd_type;
 };
 
 struct st7735fb_platform_data {
 	int rst_gpio;
 	int dc_gpio;
+	u8 lcd_type;
 };
 
 /* ST7735 Commands */

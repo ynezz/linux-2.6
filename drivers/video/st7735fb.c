@@ -25,7 +25,69 @@
 
 #include <video/st7735fb.h>
 
-static struct st7735_function st7735_cfg_script[] = {
+/* stolen from adafruit-st7735-library (c) Limor Fried/Ladyada, Adafruit Industries */
+static struct st7735_function st7735b_cfg_script[] = {
+	{ ST7735_START, ST7735_START},
+	{ ST7735_SWRESET, ST7735_SWRESET},	// 1: Software reset
+	{ ST7735_DELAY, 150},
+	{ ST7735_CMD, ST7735_SLPOUT},		// 2: Out of sleep mode
+	{ ST7735_DELAY, 500},
+	{ ST7735_CMD, ST7735_COLMOD}, 		//  3: Set color mode
+	{ ST7735_DATA, 0x05},			//     16-bit
+	{ ST7735_DELAY, 10},
+	{ ST7735_CMD, ST7735_FRMCTR1},		//  4: Frame rate control
+	{ ST7735_DATA, 0x00},			//     fastest refresh
+	{ ST7735_DATA, 0x06}, 			//     6 lines front porch
+	{ ST7735_DATA, 0x03},			//     3 lines back porch
+	{ ST7735_DELAY, 10},
+	{ ST7735_CMD, ST7735_MADCTL},		//  5: Memory access ctrl (directions)
+	{ ST7735_DATA, 0x08},			//     Row addr/col addr, bottom to top refresh		
+	{ ST7735_CMD, ST7735_DISSET5},		//  6: Display settings #5
+	{ ST7735_DATA, 0x15},			//     1 clk cycle nonoverlap
+	{ ST7735_DATA, 0x02},			//     Fix on VTL
+	{ ST7735_CMD, ST7735_INVCTR},		//  7: Display inversion control
+	{ ST7735_DATA, 0x00},			//     Line inversion
+    	{ ST7735_CMD, ST7735_PWCTR1},		//  8: Power control
+	{ ST7735_DATA, 0x02},			//     GVDD = 4.7V
+	{ ST7735_DATA, 0x70},			//     1.0uA
+	{ ST7735_DELAY, 10},
+	{ ST7735_CMD, ST7735_PWCTR2},		//  9: Power control
+	{ ST7735_DATA, 0x05},                   //     VGH = 14.7V, VGL = -7.35V
+	{ ST7735_CMD, ST7735_PWCTR3},		// 10: Power control
+	{ ST7735_DATA, 0x01},                   //     Opamp current small
+	{ ST7735_DATA, 0x02},                   //     Boost frequency
+	{ ST7735_CMD, ST7735_VMCTR1},		// 11: Power control
+	{ ST7735_DATA, 0x3C},                   //     VCOMH = 4V
+	{ ST7735_DATA, 0x38},                   //     VCOML = -1.1V
+	{ ST7735_DELAY, 10},
+	{ ST7735_CMD, ST7735_PWCTR6},		// 12: Power control
+	{ ST7735_DATA, 0x11},
+	{ ST7735_DATA, 0x15},
+	{ ST7735_CMD, ST7735_GMCTRP1},		// 13: Magical unicorn dust
+	{ ST7735_DATA, 0x09}, { ST7735_DATA, 0x16}, { ST7735_DATA, 0x09}, { ST7735_DATA, 0x20},
+	{ ST7735_DATA, 0x21}, { ST7735_DATA, 0x1B}, { ST7735_DATA, 0x13}, { ST7735_DATA, 0x19},
+	{ ST7735_DATA, 0x17}, { ST7735_DATA, 0x15}, { ST7735_DATA, 0x1E}, { ST7735_DATA, 0x2B},
+	{ ST7735_DATA, 0x04}, { ST7735_DATA, 0x05}, { ST7735_DATA, 0x02}, { ST7735_DATA, 0x0E},
+	{ ST7735_CMD, ST7735_GMCTRN1},		// 14: Sparkles and rainbows
+	{ ST7735_DATA, 0x0B}, { ST7735_DATA, 0x14}, { ST7735_DATA, 0x08}, { ST7735_DATA, 0x1E},
+	{ ST7735_DATA, 0x22}, { ST7735_DATA, 0x1D}, { ST7735_DATA, 0x18}, { ST7735_DATA, 0x1E},
+	{ ST7735_DATA, 0x1B}, { ST7735_DATA, 0x1A}, { ST7735_DATA, 0x24}, { ST7735_DATA, 0x2B},
+	{ ST7735_DATA, 0x06}, { ST7735_DATA, 0x06}, { ST7735_DATA, 0x02}, { ST7735_DATA, 0x0F},
+	{ ST7735_DELAY, 10},
+	{ ST7735_CMD, ST7735_CASET},		// 15: Column addr set, XSTART=2, XEND=129
+	{ ST7735_DATA, 0x00}, { ST7735_DATA, 0x02},
+	{ ST7735_DATA, 0x00}, { ST7735_DATA, 0x81},
+	{ ST7735_CMD, ST7735_RASET},		// 16: Row addr set, XSTART=1, XEND=160
+	{ ST7735_DATA, 0x00}, { ST7735_DATA, 0x02},
+	{ ST7735_DATA, 0x00}, { ST7735_DATA, 0xa0},
+    	{ ST7735_CMD, ST7735_NORON},		// 17: Normal display on
+	{ ST7735_DELAY, 10},
+	{ ST7735_CMD, ST7735_DISPON}, 		// 18: Main screen turn on
+	{ ST7735_DELAY, 500},
+	{ ST7735_END, ST7735_END},
+};
+
+static struct st7735_function st7735r_cfg_script[] = {
 	{ ST7735_START, ST7735_START},
 	{ ST7735_CMD, ST7735_SWRESET},
 	{ ST7735_DELAY, 150},
@@ -190,22 +252,23 @@ static void st7735_run_cfg_script(struct st7735fb_par *par)
 {
 	int i = 0;
 	int end_script = 0;
+	struct st7735_function *scr = st7735r_cfg_script;
+
+	if (par->lcd_type == ST7735_LCD_TYPE_B)
+		scr = st7735b_cfg_script;
 
 	do {
-		switch (st7735_cfg_script[i].cmd)
-		{
+		switch (scr[i].cmd) {
 		case ST7735_START:
 			break;
 		case ST7735_CMD:
-			st7735_write_cmd(par,
-				st7735_cfg_script[i].data & 0xff);
+			st7735_write_cmd(par, scr[i].data & 0xff);
 			break;
 		case ST7735_DATA:
-			st7735_write_data(par,
-				st7735_cfg_script[i].data & 0xff);
+			st7735_write_data(par, scr[i].data & 0xff);
 			break;
 		case ST7735_DELAY:
-			mdelay(st7735_cfg_script[i].data);
+			mdelay(scr[i].data);
 			break;
 		case ST7735_END:
 			end_script = 1;
@@ -389,7 +452,7 @@ static int __devinit st7735fb_probe (struct spi_device *spi)
 	}
 
 	if (!pdata) {
-		pr_err("%s: platform data required for rst and dc info\n",
+		pr_err("%s: platform data required for rst, dc, lcd_type info\n",
 			DRVNAME);
 		return -EINVAL;
 	}
@@ -434,6 +497,7 @@ static int __devinit st7735fb_probe (struct spi_device *spi)
 	par->spi = spi;
 	par->rst = pdata->rst_gpio;
 	par->dc = pdata->dc_gpio;
+	par->lcd_type = pdata->lcd_type;
 	par->buf = kmalloc(1, GFP_KERNEL);
 
 #ifdef __LITTLE_ENDIAN
@@ -454,8 +518,9 @@ static int __devinit st7735fb_probe (struct spi_device *spi)
 		goto init_fail;
 
 	printk(KERN_INFO
-		"fb%d: %s frame buffer device,\n\tusing %d KiB of video memory\n",
-		info->node, info->fix.id, vmem_size);
+		"fb%d: %s%c frame buffer device,\n\tusing %d KiB of video memory\n",
+		info->node, info->fix.id, par->lcd_type == ST7735_LCD_TYPE_R ? 'R' : 'B',
+		vmem_size);
 
 	return 0;
 
