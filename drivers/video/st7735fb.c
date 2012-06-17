@@ -296,9 +296,9 @@ static void st7735_reset(struct st7735fb_par *par)
 {
 	/* Reset controller */
 	gpio_set_value(par->rst, 0);
-	udelay(10);
+	mdelay(10);
 	gpio_set_value(par->rst, 1);
-	mdelay(120);
+	mdelay(150);
 }
 
 static void st7735fb_update_display(struct st7735fb_par *par)
