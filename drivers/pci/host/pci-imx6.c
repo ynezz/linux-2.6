@@ -36,6 +36,7 @@ struct imx6_pcie {
 	struct clk		*pcie_bus;
 	struct clk		*pcie_phy;
 	struct clk		*pcie;
+	int			reset_ep_gpio;
 	struct pcie_port	pp;
 	struct regmap		*iomuxc_gpr;
 	void __iomem		*mem_base;
@@ -293,9 +294,18 @@ static int imx6_pcie_deassert_core_reset(struct pcie_port *pp)
 
 	/* Some boards don't have PCIe reset GPIO. */
 	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
+		if (gpio_is_valid(imx6_pcie->reset_ep_gpio))
+			gpio_set_value(imx6_pcie->reset_ep_gpio, 1);
 		gpio_set_value(imx6_pcie->reset_gpio, 0);
 		msleep(100);
 		gpio_set_value(imx6_pcie->reset_gpio, 1);
+		msleep(1);
+		if (gpio_is_valid(imx6_pcie->reset_ep_gpio))
+			gpio_set_value(imx6_pcie->reset_ep_gpio, 0);
+	} else if (gpio_is_valid(imx6_pcie->reset_ep_gpio)) {
+		gpio_set_value(imx6_pcie->reset_ep_gpio, 1);
+		msleep(100);
+		gpio_set_value(imx6_pcie->reset_ep_gpio, 0);
 	}
 	return 0;
 
@@ -584,6 +594,17 @@ static int __init imx6_pcie_probe(struct platform_device *pdev)
 					    GPIOF_OUT_INIT_LOW, "PCIe reset");
 		if (ret) {
 			dev_err(&pdev->dev, "unable to get reset gpio\n");
+			return ret;
+		}
+	}
+	imx6_pcie->reset_ep_gpio = of_get_named_gpio(np, "reset-ep-gpio", 0);
+	if (gpio_is_valid(imx6_pcie->reset_ep_gpio)) {
+		ret = devm_gpio_request_one(&pdev->dev,
+					imx6_pcie->reset_ep_gpio,
+					GPIOF_OUT_INIT_HIGH,
+					"PCIe EP reset");
+		if (ret) {
+			dev_err(&pdev->dev, "unable to get reset end point gpio\n");
 			return ret;
 		}
 	}
