@@ -299,6 +299,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-wandboard.dtb \
 	imx6dl-wandboard-revb1.dtb \
 	imx6q-apf6dev.dtb \
+	imx6q-apalis-eval.dtb \
 	imx6q-arm2.dtb \
 	imx6q-cm-fx6.dtb \
 	imx6q-cubox-i.dtb \
