@@ -218,6 +218,7 @@
 		mux-ext-port = <4>;
 	};
 
+/*
 	sound_hdmi: sound-hdmi {
 		compatible = "fsl,imx6q-audio-hdmi",
 			     "fsl,imx-audio-hdmi";
@@ -225,6 +226,7 @@
 		hdmi-controller = <&hdmi_audio>;
 		status = "disabled";
 	};
+*/
 
 	sound_spdif: sound-spdif {
 		compatible = "fsl,imx-audio-spdif";
@@ -291,6 +293,7 @@
 	};
 };
 
+/*
 &flexcan1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan1>;
@@ -324,6 +327,7 @@
 	fsl,phy_reg_cksymtx = <0x800d>;
 	status = "disabled";
 };
+*/
 
 /*
  * GEN1_I2C: I2C1_SDA/SCL on MXM3 209/211 (e.g. RTC on carrier

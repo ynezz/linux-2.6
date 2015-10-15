@@ -39,6 +39,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_gpio_keys>;
 
+/*
 		wakeup {
 			label = "Wake-Up";
 			gpios = <&gpio1 4 GPIO_ACTIVE_LOW>;
@@ -46,6 +47,7 @@
 			debounce-interval = <10>;
 			gpio-key,wakeup;
 		};
+*/
 	};
 
 	pwmleds {
@@ -154,6 +156,7 @@
 	};
 };
 
+/*
 &flexcan1 {
 	status = "okay";
 };
@@ -177,6 +180,7 @@
 &hdmi_video {
 	status = "okay";
 };
+*/
 
 /*
  * GEN1_I2C: I2C1_SDA/SCL on MXM3 209/211 (e.g. RTC on carrier
@@ -267,6 +271,7 @@
 /*
  * DDC_I2C: I2C2_SDA/SCL on MXM3 205/207
  */
+/*
 &i2cddc {
 	status = "okay";
 
@@ -275,6 +280,7 @@
 		reg = <0x50>;
 	};
 };
+*/
 
 &iomuxc {
 	/*
@@ -334,9 +340,11 @@
 	status = "okay";
 };
 
+/*
 &sound_hdmi {
 	status = "okay";
 };
+*/
 
 &sound_spdif {
 	status = "okay";
