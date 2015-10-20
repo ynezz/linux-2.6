@@ -122,6 +122,12 @@ static inline int addrconf_ifid_eui48(u8 *eui, struct net_device *dev)
 	return 0;
 }
 
+extern int			(*ipv6_dev_get_saddr_hook)(struct net *net,
+						const struct net_device *dev,
+						const struct in6_addr *daddr,
+						unsigned int prefs,
+						struct in6_addr *saddr);
+
 static inline unsigned long addrconf_timeout_fixup(u32 timeout,
 						   unsigned int unit)
 {
