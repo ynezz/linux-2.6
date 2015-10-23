@@ -1338,7 +1338,9 @@ static struct platform_driver imx6_pcie_driver = {
 		.name	= "imx6q-pcie",
 		.owner	= THIS_MODULE,
 		.of_match_table = imx6_pcie_of_match,
+#ifdef CONFIG_PM_SLEEP
 		.pm = &pci_imx_pm_ops,
+#endif
 	},
 	.shutdown = imx6_pcie_shutdown,
 };
